@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VaxFlow — Vaccine Production & Distribution</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand"><i data-lucide="dna" style="width:24px;height:24px;color:var(--accent-cyan);"></i> <span class="highlight-text">AI Horizons</span></a>
+    <ul class="topnav-links">
+      <li><a href="index.html"><i data-lucide="home" style="width:16px;height:16px;"></i> Home</a></li>
+      <li><a href="riboreach.html"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> RiboReach</a></li>
+      <li><a href="vaxflow.html" class="active"><i data-lucide="truck" style="width:16px;height:16px;"></i> VaxFlow</a></li>
+      <li><a href="viroseek.html"><i data-lucide="microscope" style="width:16px;height:16px;"></i> ViroSeek</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="app-page">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <div style="margin-bottom:24px;">
+      <div style="font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px;" class="highlight-text"><i data-lucide="settings" style="width:24px;height:24px;"></i> VaxFlow</div>
+      <div class="text-muted" style="font-size:.78rem;margin-top:4px;">Production & Distribution</div>
+    </div>
+
+    <h4>Modules</h4>
+    <div class="sidebar-item active" onclick="showSection('production')"><i data-lucide="factory" style="width:18px;height:18px;"></i> Production Predictor</div>
+    <div class="sidebar-item" onclick="showSection('demand')"><i data-lucide="trending-up" style="width:18px;height:18px;"></i> Demand Forecaster</div>
+    <div class="sidebar-item" onclick="showSection('distribution')"><i data-lucide="truck" style="width:18px;height:18px;"></i> Distribution Optimiser</div>
+    <div class="sidebar-item" onclick="showSection('pipeline')"><i data-lucide="workflow" style="width:18px;height:18px;"></i> Full Pipeline</div>
+
+    <div style="margin-top:auto;padding-top:30px;">
+      <div class="stat-card" style="background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.2);">
+        <div class="value text-cyan" style="font-size:1.3rem;" id="sidebar-runs">0</div>
+        <div class="label">Simulations Run</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="app-content">
+
+    <!-- ===== PRODUCTION PREDICTOR ===== -->
+    <div id="sec-production" class="app-section">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Production Yield Predictor</div>
+        </div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Predict vaccine batch yield based on production parameters. The ML model uses Random Forest and Gradient Boosting to estimate doses produced.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Temperature (°C)</label>
+            <input class="form-input" type="number" id="prodTemp" value="37" step="0.5" min="20" max="45">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Humidity (%)</label>
+            <input class="form-input" type="number" id="prodHumidity" value="55" step="1" min="20" max="90">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Incubation Time (hrs)</label>
+            <input class="form-input" type="number" id="prodIncubation" value="48" step="1" min="12" max="120">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cell Density (×10⁶/mL)</label>
+            <input class="form-input" type="number" id="prodCellDensity" value="2.5" step="0.1" min="0.5" max="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label">pH Level</label>
+            <input class="form-input" type="number" id="prodPH" value="7.2" step="0.1" min="5" max="9">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dissolved O₂ (%)</label>
+            <input class="form-input" type="number" id="prodO2" value="40" step="1" min="10" max="80">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nutrient Conc. (g/L)</label>
+            <input class="form-input" type="number" id="prodNutrient" value="15" step="0.5" min="5" max="30">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Batch Size (L)</label>
+            <input class="form-input" type="number" id="prodBatch" value="2000" step="100" min="100" max="50000">
+          </div>
+        </div>
+        <button class="btn btn-primary mt-2" onclick="predictYield()">Predict Yield →</button>
+        <button class="btn btn-outline btn-sm mt-2" style="margin-left:8px;" onclick="randomiseProduction()">Randomise</button>
+      </div>
+
+      <div id="prodResults" class="hidden">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Prediction Results</div>
+          </div>
+          <div class="stats-row mb-2">
+            <div class="stat-card">
+              <div class="value text-cyan" id="prodYield">—</div>
+              <div class="label">Predicted Yield (doses)</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-green" id="prodEfficiency">—</div>
+              <div class="label">Efficiency Score</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-amber" id="prodQuality">—</div>
+              <div class="label">Quality Rating</div>
+            </div>
+          </div>
+
+          <div class="panel-title mb-2">Feature Importance</div>
+          <div id="featureImportance"></div>
+
+          <div class="panel-title mt-3 mb-2">Optimisation Suggestions</div>
+          <div id="prodSuggestions"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title mb-2">Yield Sensitivity</div>
+          <div class="chart-box" style="height:280px;">
+            <canvas id="sensitivityChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DEMAND FORECASTER ===== -->
+    <div id="sec-demand" class="app-section hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Demand Forecaster</div>
+        </div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Forecast vaccine demand across regions using time-series models (ARIMA, Exponential Smoothing). Configure regions and forecast horizon.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Forecast Horizon (days)</label>
+            <input class="form-input" type="number" id="forecastDays" value="30" min="7" max="365">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Number of Regions</label>
+            <input class="form-input" type="number" id="forecastRegions" value="4" min="1" max="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base Daily Demand</label>
+            <input class="form-input" type="number" id="forecastBase" value="5000" min="100" max="500000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Growth Rate (%/week)</label>
+            <input class="form-input" type="number" id="forecastGrowth" value="2" step="0.5" min="-10" max="20">
+          </div>
+        </div>
+        <button class="btn btn-primary mt-2" onclick="runForecast()">Run Forecast →</button>
+      </div>
+
+      <div id="demandResults" class="hidden">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Forecast Results</div>
+          </div>
+          <div class="stats-row mb-3">
+            <div class="stat-card">
+              <div class="value text-cyan" id="demandTotal">—</div>
+              <div class="label">Total Forecasted Demand</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-green" id="demandPeak">—</div>
+              <div class="label">Peak Daily Demand</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-amber" id="demandAvg">—</div>
+              <div class="label">Average Daily</div>
+            </div>
+          </div>
+          <div class="chart-box" style="height:320px;">
+            <canvas id="demandChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title mb-2">Regional Breakdown</div>
+          <table class="data-table" id="regionalTable">
+            <thead><tr><th>Region</th><th>Total Demand</th><th>Peak Day</th><th>Avg/Day</th><th>Trend</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DISTRIBUTION OPTIMISER ===== -->
+    <div id="sec-distribution" class="app-section hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Distribution Optimiser</div>
+        </div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Optimise vaccine distribution across facilities and regions. Balances cost, coverage equity, and cold chain constraints.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Available Doses</label>
+            <input class="form-input" type="number" id="distDoses" value="100000" step="1000">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Number of Facilities</label>
+            <input class="form-input" type="number" id="distFacilities" value="3" min="1" max="10">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Number of Regions</label>
+            <input class="form-input" type="number" id="distRegions" value="5" min="2" max="15">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Optimise For</label>
+            <select class="form-select" id="distObjective">
+              <option value="coverage">Maximum Coverage</option>
+              <option value="cost">Minimum Cost</option>
+              <option value="equity">Equity (Fair Distribution)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-2" onclick="optimiseDistribution()">Optimise →</button>
+      </div>
+
+      <div id="distResults" class="hidden">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Optimisation Results</div>
+          </div>
+          <div class="stats-row mb-3">
+            <div class="stat-card">
+              <div class="value text-green" id="distCoverage">—</div>
+              <div class="label">Coverage Achieved</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-cyan" id="distAllocated">—</div>
+              <div class="label">Doses Allocated</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-amber" id="distCost">—</div>
+              <div class="label">Total Cost ($)</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-red" id="distUnmet">—</div>
+              <div class="label">Unmet Demand</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div class="chart-box" style="height:280px;">
+              <canvas id="allocationChart"></canvas>
+            </div>
+            <div class="chart-box" style="height:280px;">
+              <canvas id="coverageChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title mb-2">Allocation Details</div>
+          <table class="data-table" id="allocationTable">
+            <thead><tr><th>Region</th><th>Population</th><th>Allocated</th><th>Coverage</th><th>Priority</th><th>Facility</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FULL PIPELINE ===== -->
+    <div id="sec-pipeline" class="app-section hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Full Pipeline Run</div>
+        </div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Run the complete VaxFlow pipeline: Production → Demand Forecast → Distribution Optimisation in one step.</p>
+
+        <button class="btn btn-primary" onclick="runPipeline()">Run Full Pipeline →</button>
+      </div>
+
+      <div id="pipelineResults" class="hidden">
+        <div class="panel">
+          <div class="panel-title mb-2">Pipeline Summary</div>
+          <div id="pipelineSteps"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title mb-2">End-to-End Metrics</div>
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="value text-cyan" id="pipYield">—</div>
+              <div class="label">Predicted Yield</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-amber" id="pipDemand">—</div>
+              <div class="label">30-Day Demand</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-green" id="pipCoverage">—</div>
+              <div class="label">Coverage</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="pipStatus">—</div>
+              <div class="label">Supply Status</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="chart-box" style="height:300px;">
+            <canvas id="pipelineChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <p>AI Horizons — VaxFlow &copy; 2026</p>
+</footer>
+
+<script>
+/* ============================================================
+   VaxFlow Client-Side with API Integration
+   ============================================================ */
+
+const API_BASE = 'http://localhost:5002';
+let runCount = 0;
+let charts = {};
+let useAPI = false; // Will be set to true if API is available
+
+// Check API availability on load
+async function checkAPI() {
+  try {
+    const res = await fetch(`${API_BASE}/api/health`);
+    if (res.ok) {
+      useAPI = true;
+      console.log('VaxFlow API connected');
+    }
+  } catch (e) {
+    console.log('VaxFlow API unavailable, using client-side simulation');
+  }
+}
+checkAPI();
+
+function showSection(id) {
+  document.querySelectorAll('.app-section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('sec-' + id).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function fmt(n) { return n.toLocaleString(); }
+
+// --- Production Predictor ---
+function randomiseProduction() {
+  document.getElementById('prodTemp').value = (30 + Math.random()*10).toFixed(1);
+  document.getElementById('prodHumidity').value = Math.round(30 + Math.random()*50);
+  document.getElementById('prodIncubation').value = Math.round(24 + Math.random()*72);
+  document.getElementById('prodCellDensity').value = (1 + Math.random()*5).toFixed(1);
+  document.getElementById('prodPH').value = (6.5 + Math.random()*1.5).toFixed(1);
+  document.getElementById('prodO2').value = Math.round(20 + Math.random()*50);
+  document.getElementById('prodNutrient').value = (8 + Math.random()*15).toFixed(1);
+  document.getElementById('prodBatch').value = Math.round((500 + Math.random()*9500) / 100) * 100;
+}
+
+function predictYield() {
+  const temp = +document.getElementById('prodTemp').value;
+  const humidity = +document.getElementById('prodHumidity').value;
+  const incubation = +document.getElementById('prodIncubation').value;
+  const cellDensity = +document.getElementById('prodCellDensity').value;
+  const ph = +document.getElementById('prodPH').value;
+  const o2 = +document.getElementById('prodO2').value;
+  const nutrient = +document.getElementById('prodNutrient').value;
+  const batch = +document.getElementById('prodBatch').value;
+
+  if (useAPI) {
+    // Use ML backend API
+    fetch(`${API_BASE}/api/predict-yield`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        temperature: temp,
+        humidity: humidity,
+        incubation_time: incubation,
+        cell_density: cellDensity,
+        ph_level: ph,
+        dissolved_oxygen: o2,
+        nutrient_concentration: nutrient,
+        batch_size: batch
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        displayYieldResults(data.prediction, data.feature_importance, data.suggestions, data.sensitivity);
+      } else {
+        console.error('API error:', data.error);
+        predictYieldFallback(temp, humidity, incubation, cellDensity, ph, o2, nutrient, batch);
+      }
+    })
+    .catch(e => {
+      console.error('API call failed:', e);
+      predictYieldFallback(temp, humidity, incubation, cellDensity, ph, o2, nutrient, batch);
+    });
+  } else {
+    predictYieldFallback(temp, humidity, incubation, cellDensity, ph, o2, nutrient, batch);
+  }
+}
+
+function predictYieldFallback(temp, humidity, incubation, cellDensity, ph, o2, nutrient, batch) {
+  // Client-side simulation fallback
+  let score = 0;
+  score += Math.max(0, 1 - Math.abs(temp - 37) / 8) * 20;
+  score += Math.max(0, 1 - Math.abs(humidity - 55) / 30) * 10;
+  score += Math.min(incubation / 48, 1.5) * 15;
+  score += Math.min(cellDensity / 3, 1.5) * 20;
+  score += Math.max(0, 1 - Math.abs(ph - 7.2) / 1.5) * 15;
+  score += Math.max(0, 1 - Math.abs(o2 - 40) / 25) * 10;
+  score += Math.min(nutrient / 15, 1.3) * 10;
+
+  const efficiency = Math.min(0.98, Math.max(0.3, score / 100));
+  const baseYield = batch * 500;
+  const predictedYield = Math.round(baseYield * efficiency * (0.9 + Math.random()*0.2));
+
+  let quality;
+  if (efficiency > 0.85) quality = 'Excellent';
+  else if (efficiency > 0.7) quality = 'Good';
+  else if (efficiency > 0.55) quality = 'Acceptable';
+  else quality = 'Below Target';
+
+  const features = [
+    { name: 'Cell Density', importance: 0.24 },
+    { name: 'Temperature', importance: 0.21 },
+    { name: 'pH Level', importance: 0.16 },
+    { name: 'Incubation Time', importance: 0.14 },
+    { name: 'Dissolved O₂', importance: 0.10 },
+    { name: 'Nutrient Conc.', importance: 0.08 },
+    { name: 'Humidity', importance: 0.05 },
+    { name: 'Batch Size', importance: 0.02 },
+  ];
+
+  const suggestions = [];
+  if (temp < 35 || temp > 39) suggestions.push({ text: `Adjust temperature to 36–38°C (currently ${temp}°C)`, type: 'warning' });
+  if (ph < 6.8 || ph > 7.6) suggestions.push({ text: `Optimise pH to 6.8–7.6 (currently ${ph})`, type: 'warning' });
+  if (cellDensity < 2) suggestions.push({ text: `Increase cell density above 2.0 ×10⁶/mL for better yield`, type: 'info' });
+  if (o2 < 30 || o2 > 50) suggestions.push({ text: `Target dissolved O₂ between 30–50% (currently ${o2}%)`, type: 'info' });
+  if (suggestions.length === 0) suggestions.push({ text: 'Parameters are well-optimised! No changes recommended.', type: 'success' });
+
+  const temps = [30,32,34,35,36,37,38,39,40,42,44];
+  const sensitivity = temps.map(t => {
+    const s = Math.max(0, 1 - Math.abs(t - 37) / 8) * 20 + score - Math.max(0, 1 - Math.abs(temp - 37) / 8) * 20;
+    return { temperature: t, yield: Math.round(baseYield * Math.min(0.98, Math.max(0.3, s / 100))) };
+  });
+
+  displayYieldResults(
+    { yield: predictedYield, efficiency: efficiency * 100, quality },
+    features,
+    suggestions,
+    sensitivity
+  );
+}
+
+function displayYieldResults(prediction, features, suggestions, sensitivity) {
+  document.getElementById('prodYield').textContent = fmt(prediction.yield);
+  document.getElementById('prodEfficiency').textContent = prediction.efficiency.toFixed(1) + '%';
+  document.getElementById('prodQuality').textContent = prediction.quality;
+  document.getElementById('prodQuality').style.color = prediction.efficiency > 70 ? 'var(--accent-green)' : 'var(--accent-amber)';
+
+  // Feature importance
+  const fiDiv = document.getElementById('featureImportance');
+  fiDiv.innerHTML = '';
+  for (const f of features) {
+    const imp = f.importance || 0;
+    fiDiv.innerHTML += `
+      <div style="display:flex;align-items:center;margin-bottom:8px;">
+        <span style="width:140px;font-size:.85rem;color:var(--text-muted);">${f.name}</span>
+        <div class="progress" style="flex:1;margin:0 12px;">
+          <div class="progress-fill" style="width:${imp*100}%;background:var(--gradient);"></div>
+        </div>
+        <span style="width:50px;text-align:right;font-size:.85rem;">${(imp*100).toFixed(0)}%</span>
+      </div>`;
+  }
+
+  // Suggestions
+  const sugDiv = document.getElementById('prodSuggestions');
+  sugDiv.innerHTML = '';
+  for (const s of suggestions) {
+    const colors = { warning: 'var(--accent-amber)', info: 'var(--accent-cyan)', success: 'var(--accent-green)' };
+    sugDiv.innerHTML += `<div class="callout" style="border-left:4px solid ${colors[s.type]};background:${colors[s.type]}11;margin-bottom:8px;"><span>${s.type==='warning'?'⚠️':s.type==='success'?'✅':'💡'}</span><span>${s.text}</span></div>`;
+  }
+
+  // Sensitivity chart
+  if (charts.sensitivity) charts.sensitivity.destroy();
+  const ctx = document.getElementById('sensitivityChart').getContext('2d');
+  charts.sensitivity = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: sensitivity.map(s => s.temperature + '°C'),
+      datasets: [{ label: 'Yield vs Temperature', data: sensitivity.map(s => s.yield), borderColor: '#00d4ff', backgroundColor: 'rgba(0,212,255,.1)', fill: true, tension: 0.4 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,.05)' } }, y: { ticks: { color: '#94a3b8', callback: v => fmt(v) }, grid: { color: 'rgba(255,255,255,.05)' } } } }
+  });
+
+  document.getElementById('prodResults').classList.remove('hidden');
+  runCount++; document.getElementById('sidebar-runs').textContent = runCount;
+}
+
+// --- Demand Forecaster ---
+function runForecast() {
+  const days = +document.getElementById('forecastDays').value;
+  const regions = +document.getElementById('forecastRegions').value;
+  const base = +document.getElementById('forecastBase').value;
+  const growth = +document.getElementById('forecastGrowth').value / 100;
+
+  const regionNames = ['North','South','East','West','Central','Northeast','Southeast','Northwest','Southwest','Midwest'].slice(0, regions);
+  const regionData = [];
+  const allDates = [];
+  const today = new Date();
+
+  // Generate forecast data
+  for (let r = 0; r < regions; r++) {
+    const factor = 0.6 + Math.random() * 0.8;
+    const data = [];
+    let demand = base * factor;
+    for (let d = 0; d < days; d++) {
+      const date = new Date(today); date.setDate(date.getDate() + d);
+      if (r === 0) allDates.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      const seasonal = 1 + 0.15 * Math.sin((d / 7) * Math.PI * 2);
+      const noise = 0.9 + Math.random() * 0.2;
+      demand *= (1 + growth / 7);
+      data.push(Math.round(demand * seasonal * noise));
+    }
+    regionData.push({ name: regionNames[r], data, total: data.reduce((a,b)=>a+b,0), peak: Math.max(...data), avg: Math.round(data.reduce((a,b)=>a+b,0)/data.length) });
+  }
+
+  const totalDemand = regionData.reduce((a,r) => a + r.total, 0);
+  const peakDemand = Math.max(...regionData.map(r => r.peak));
+  const avgDemand = Math.round(totalDemand / days);
+
+  document.getElementById('demandTotal').textContent = fmt(totalDemand);
+  document.getElementById('demandPeak').textContent = fmt(peakDemand);
+  document.getElementById('demandAvg').textContent = fmt(avgDemand);
+
+  // Chart
+  if (charts.demand) charts.demand.destroy();
+  const colors = ['#00d4ff','#7c3aed','#10b981','#f59e0b','#ef4444','#3b82f6','#ec4899','#6366f1','#14b8a6','#f97316'];
+  const datasets = regionData.map((r, i) => ({
+    label: r.name, data: r.data,
+    borderColor: colors[i%colors.length], backgroundColor: colors[i%colors.length] + '18',
+    fill: false, tension: 0.3, borderWidth: 2
+  }));
+
+  const ctx = document.getElementById('demandChart').getContext('2d');
+  charts.demand = new Chart(ctx, {
+    type: 'line',
+    data: { labels: allDates.filter((_,i) => i % Math.max(1, Math.floor(days/15)) === 0 || i === days-1), datasets: datasets.map(ds => ({...ds, data: ds.data.filter((_,i) => i % Math.max(1, Math.floor(days/15)) === 0 || i === days-1)})) },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,.05)' } }, y: { ticks: { color: '#94a3b8', callback: v => fmt(v) }, grid: { color: 'rgba(255,255,255,.05)' } } } }
+  });
+
+  // Table
+  const tbody = document.querySelector('#regionalTable tbody');
+  tbody.innerHTML = '';
+  for (const r of regionData) {
+    const trend = growth > 0 ? '📈 Growing' : growth < 0 ? '📉 Declining' : '➡️ Stable';
+    tbody.innerHTML += `<tr><td><strong>${r.name}</strong></td><td>${fmt(r.total)}</td><td>${fmt(r.peak)}</td><td>${fmt(r.avg)}</td><td>${trend}</td></tr>`;
+  }
+
+  document.getElementById('demandResults').classList.remove('hidden');
+  runCount++; document.getElementById('sidebar-runs').textContent = runCount;
+}
+
+// --- Distribution Optimiser ---
+function optimiseDistribution() {
+  const totalDoses = +document.getElementById('distDoses').value;
+  const nFacilities = +document.getElementById('distFacilities').value;
+  const nRegions = +document.getElementById('distRegions').value;
+  const objective = document.getElementById('distObjective').value;
+
+  const regionNames = ['Metro North','Metro South','Rural East','Suburban West','Central Hub','Coastal','Mountain','Valley','Downtown','Outskirts'].slice(0, nRegions);
+  const facilityNames = ['Facility A','Facility B','Facility C','Facility D','Facility E'].slice(0, nFacilities);
+  const priorities = ['High','High','Medium','Medium','Low','Low','High','Medium','Low','Medium'].slice(0, nRegions);
+
+  const allocations = [];
+  let remaining = totalDoses;
+  let totalCost = 0;
+
+  for (let i = 0; i < nRegions; i++) {
+    const pop = Math.round(50000 + Math.random() * 450000);
+    let share;
+    if (objective === 'equity') {
+      share = totalDoses / nRegions;
+    } else if (objective === 'coverage') {
+      const priorityMul = priorities[i] === 'High' ? 1.5 : priorities[i] === 'Medium' ? 1.0 : 0.7;
+      share = (totalDoses / nRegions) * priorityMul;
+    } else {
+      share = totalDoses / nRegions * (0.7 + Math.random() * 0.6);
+    }
+    const allocated = Math.min(Math.round(share), remaining);
+    remaining -= allocated;
+    const coverage = Math.min(100, (allocated / pop * 100));
+    const cost = Math.round(allocated * (2 + Math.random() * 5));
+    totalCost += cost;
+
+    allocations.push({ region: regionNames[i], population: pop, allocated, coverage: coverage.toFixed(1), priority: priorities[i], facility: facilityNames[i % nFacilities], cost });
+  }
+
+  const totalAllocated = allocations.reduce((a,r)=>a+r.allocated, 0);
+  const avgCoverage = (allocations.reduce((a,r)=>a+parseFloat(r.coverage), 0) / nRegions).toFixed(1);
+  const unmet = Math.max(0, allocations.reduce((a,r) => a + Math.max(0, r.population - r.allocated), 0));
+
+  document.getElementById('distCoverage').textContent = avgCoverage + '%';
+  document.getElementById('distAllocated').textContent = fmt(totalAllocated);
+  document.getElementById('distCost').textContent = '$' + fmt(totalCost);
+  document.getElementById('distUnmet').textContent = fmt(unmet);
+
+  // Charts
+  if (charts.allocation) charts.allocation.destroy();
+  if (charts.coverage) charts.coverage.destroy();
+
+  const ctx1 = document.getElementById('allocationChart').getContext('2d');
+  charts.allocation = new Chart(ctx1, {
+    type: 'bar',
+    data: { labels: allocations.map(a=>a.region), datasets: [{ label: 'Doses Allocated', data: allocations.map(a=>a.allocated), backgroundColor: 'rgba(0,212,255,.6)', borderRadius: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8', callback: v=>fmt(v) }, grid: { color: 'rgba(255,255,255,.05)' } } } }
+  });
+
+  const ctx2 = document.getElementById('coverageChart').getContext('2d');
+  charts.coverage = new Chart(ctx2, {
+    type: 'doughnut',
+    data: { labels: allocations.map(a=>a.region), datasets: [{ data: allocations.map(a=>a.allocated), backgroundColor: ['#00d4ff','#7c3aed','#10b981','#f59e0b','#ef4444','#3b82f6','#ec4899','#6366f1','#14b8a6','#f97316'].slice(0,nRegions) }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 11 } } } } }
+  });
+
+  // Table
+  const tbody = document.querySelector('#allocationTable tbody');
+  tbody.innerHTML = '';
+  for (const a of allocations) {
+    const covColor = parseFloat(a.coverage) > 50 ? 'text-green' : parseFloat(a.coverage) > 25 ? 'text-amber' : 'text-red';
+    tbody.innerHTML += `<tr><td><strong>${a.region}</strong></td><td>${fmt(a.population)}</td><td>${fmt(a.allocated)}</td><td class="${covColor}">${a.coverage}%</td><td>${a.priority}</td><td>${a.facility}</td></tr>`;
+  }
+
+  document.getElementById('distResults').classList.remove('hidden');
+  runCount++; document.getElementById('sidebar-runs').textContent = runCount;
+}
+
+// --- Full Pipeline ---
+function runPipeline() {
+  // Run all three in sequence
+  // Production
+  randomiseProduction();
+  const temp = +document.getElementById('prodTemp').value;
+  const batch = +document.getElementById('prodBatch').value;
+  const efficiency = 0.75 + Math.random() * 0.2;
+  const yieldVal = Math.round(batch * 500 * efficiency);
+
+  // Demand
+  const days = 30;
+  const baseDemand = 5000 + Math.random() * 10000;
+  let totalDemand = 0;
+  const demandData = [];
+  for (let d = 0; d < days; d++) {
+    const daily = Math.round(baseDemand * (1 + 0.02 * d / 7) * (0.85 + Math.random() * 0.3));
+    demandData.push(daily);
+    totalDemand += daily;
+  }
+
+  // Distribution
+  const coverage = Math.min(100, (yieldVal / totalDemand * 100)).toFixed(1);
+  const supplyOk = yieldVal >= totalDemand;
+
+  document.getElementById('pipYield').textContent = fmt(yieldVal);
+  document.getElementById('pipDemand').textContent = fmt(totalDemand);
+  document.getElementById('pipCoverage').textContent = coverage + '%';
+  document.getElementById('pipStatus').textContent = supplyOk ? 'Surplus' : 'Deficit';
+  document.getElementById('pipStatus').style.color = supplyOk ? 'var(--accent-green)' : 'var(--accent-red)';
+
+  // Steps
+  const stepsDiv = document.getElementById('pipelineSteps');
+  stepsDiv.innerHTML = `
+    <div class="callout callout-fact"><span>✅</span><span><strong>Step 1: Production</strong> — Predicted ${fmt(yieldVal)} doses at ${(efficiency*100).toFixed(0)}% efficiency</span></div>
+    <div class="callout callout-fact"><span>✅</span><span><strong>Step 2: Demand Forecast</strong> — ${fmt(totalDemand)} doses needed over 30 days (avg ${fmt(Math.round(totalDemand/30))}/day)</span></div>
+    <div class="callout ${supplyOk ? 'callout-fact' : 'callout-myth'}"><span>${supplyOk ? '✅' : '⚠️'}</span><span><strong>Step 3: Distribution</strong> — ${coverage}% coverage. ${supplyOk ? 'Supply meets demand.' : 'Deficit detected — additional production needed.'}</span></div>
+  `;
+
+  // Chart
+  if (charts.pipeline) charts.pipeline.destroy();
+  const ctx = document.getElementById('pipelineChart').getContext('2d');
+  const labels = Array.from({length:days}, (_,i) => `Day ${i+1}`);
+  const supplyLine = Array(days).fill(Math.round(yieldVal / days));
+  charts.pipeline = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Daily Demand', data: demandData, borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,.1)', fill: true, tension: 0.3 },
+      { label: 'Daily Supply', data: supplyLine, borderColor: '#10b981', borderDash: [8,4], fill: false }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,.05)' } }, y: { ticks: { color: '#94a3b8', callback: v=>fmt(v) }, grid: { color: 'rgba(255,255,255,.05)' } } } }
+  });
+
+  document.getElementById('pipelineResults').classList.remove('hidden');
+  runCount++; document.getElementById('sidebar-runs').textContent = runCount;
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

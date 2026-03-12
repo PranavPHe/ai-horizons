@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Horizons — Vaccine Intelligence Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand"><i data-lucide="dna" style="width:24px;height:24px;color:var(--accent-cyan);"></i> <span class="highlight-text">AI Horizons</span></a>
+    <ul class="topnav-links">
+      <li><a href="index.html" class="active"><i data-lucide="home" style="width:16px;height:16px;"></i> Home</a></li>
+      <li><a href="riboreach.html"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> RiboReach</a></li>
+      <li><a href="vaxflow.html"><i data-lucide="truck" style="width:16px;height:16px;"></i> VaxFlow</a></li>
+      <li><a href="viroseek.html"><i data-lucide="microscope" style="width:16px;height:16px;"></i> ViroSeek</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <h1>Advancing Vaccine Science <span class="highlight-text">with AI</span></h1>
+  <p>An integrated intelligence platform combining genomic analysis, production optimisation, and public trust education.</p>
+  <div style="display:flex;gap:12px;justify-content:center;position:relative;">
+    <a href="#platforms" class="btn btn-primary"><i data-lucide="arrow-down" style="width:18px;height:18px;"></i> Explore Platforms</a>
+  </div>
+</section>
+
+<!-- ===== Platform Cards ===== -->
+<section class="section" id="platforms">
+  <div class="container">
+    <h2 class="text-center mb-3" style="font-size:1.8rem;">Three Pillars of <span class="highlight-text">Vaccine Intelligence</span></h2>
+
+    <div class="cards-grid">
+
+      <!-- RiboReach -->
+      <div class="card">
+        <div class="card-icon" style="background:rgba(155,114,207,.12);"><i data-lucide="shield-check" style="width:28px;height:28px;color:var(--accent-violet);"></i></div>
+        <h3>RiboReach</h3>
+        <p>Misinformation detection and personalized vaccine education. Analyses user concerns, classifies claims, and generates responses tailored to each person's trust level.</p>
+        <div class="tag-row">
+          <span class="tag violet">NLP</span>
+          <span class="tag violet">Sentiment Analysis</span>
+          <span class="tag">TF-IDF</span>
+          <span class="tag">Embeddings</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Misinfo Categories</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-violet);">8+</div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Concern Types</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-violet);">11</div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Trust Levels</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-violet);">4</div>
+          </div>
+        </div>
+        <a href="riboreach.html" class="btn btn-primary btn-sm"><i data-lucide="external-link" style="width:14px;height:14px;"></i> Launch RiboReach</a>
+      </div>
+
+      <!-- VaxFlow -->
+      <div class="card">
+        <div class="card-icon" style="background:rgba(78,205,196,.12);"><i data-lucide="settings" style="width:28px;height:28px;color:var(--accent-cyan);"></i></div>
+        <h3>VaxFlow</h3>
+        <p>Production yield prediction, demand forecasting, and distribution optimisation. Ensures the right doses reach the right places at the right time.</p>
+        <div class="tag-row">
+          <span class="tag">Random Forest</span>
+          <span class="tag">Gradient Boost</span>
+          <span class="tag green">Time Series</span>
+          <span class="tag green">Optimisation</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">ML Models</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-cyan);">6</div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Optimisation Targets</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-cyan);">3</div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Pipeline Stages</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-cyan);">4</div>
+          </div>
+        </div>
+        <a href="vaxflow.html" class="btn btn-primary btn-sm"><i data-lucide="external-link" style="width:14px;height:14px;"></i> Launch VaxFlow</a>
+      </div>
+
+      <!-- ViroSeek -->
+      <div class="card">
+        <div class="card-icon" style="background:rgba(69,179,105,.12);"><i data-lucide="dna" style="width:28px;height:28px;color:var(--accent-green);"></i></div>
+        <h3>ViroSeek</h3>
+        <p>Genomic sequence analysis and vaccine candidate ranking. Identifies immunogenic epitopes, scores candidates on safety and stability, and generates interactive dashboards.</p>
+        <div class="tag-row">
+          <span class="tag green">Bioinformatics</span>
+          <span class="tag green">Epitope Mapping</span>
+          <span class="tag amber">mRNA Design</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Candidates</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-green);">3</div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">Epitopes Found</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-green);">89</div>
+          </div>
+          <div style="flex:1;min-width:100px;">
+            <div style="font-size:.78rem;color:var(--text-muted);">High Confidence</div>
+            <div style="font-size:1.4rem;font-weight:700;color:var(--accent-green);">2</div>
+          </div>
+        </div>
+        <a href="viroseek.html" class="btn btn-primary btn-sm"><i data-lucide="external-link" style="width:14px;height:14px;"></i> Launch ViroSeek</a>
+      </div>
+
+    </div><!-- /cards-grid -->
+  </div>
+</section>
+
+<!-- ===== How It Works ===== -->
+<section class="section" style="background:var(--bg-secondary);">
+  <div class="container text-center">
+    <h2 class="mb-3" style="font-size:1.6rem;">End-to-End <span class="highlight-text">Vaccine Intelligence</span></h2>
+    <div class="cards-grid" style="max-width:960px;margin:0 auto;">
+      <div class="panel text-center">
+        <div style="margin-bottom:12px;"><i data-lucide="search" style="width:32px;height:32px;color:var(--accent-green);"></i></div>
+        <h4 class="mb-1">Discover</h4>
+        <p class="text-muted" style="font-size:.9rem;">ViroSeek analyses viral genomes, identifies epitopes, and ranks vaccine candidates by immunogenicity, stability, and safety.</p>
+      </div>
+      <div class="panel text-center">
+        <div style="margin-bottom:12px;"><i data-lucide="package" style="width:32px;height:32px;color:var(--accent-cyan);"></i></div>
+        <h4 class="mb-1">Produce & Distribute</h4>
+        <p class="text-muted" style="font-size:.9rem;">VaxFlow predicts production yields, forecasts demand by region, and optimises distribution logistics.</p>
+      </div>
+      <div class="panel text-center">
+        <div style="margin-bottom:12px;"><i data-lucide="users" style="width:32px;height:32px;color:var(--accent-violet);"></i></div>
+        <h4 class="mb-1">Educate & Trust</h4>
+        <p class="text-muted" style="font-size:.9rem;">RiboReach fights misinformation with personalised educational responses that build public trust.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

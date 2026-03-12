@@ -1,0 +1,144 @@
+======================================================================
+VIROSEEK - VACCINE TARGET ANALYSIS REPORT
+======================================================================
+
+Total candidates analyzed: 3
+
+RANKING CRITERIA:
+  - Immunogenicity (50%): Predicted immune response strength
+  - Mutation Stability (30%): Resistance to viral mutation
+  - Safety (20%): Absence of harmful motifs
+
+SUMMARY RANKING:
+----------------------------------------------------------------------
+Rank  Grade  Gene            Overall    Immuno     Stable     Safe      
+----------------------------------------------------------------------
+1     A      REV7            0.856      0.840      0.787      1.000     
+2     A      AXL2            0.841      0.830      0.753      1.000     
+3     B      unknown         0.773      0.848      0.495      1.000     
+----------------------------------------------------------------------
+
+======================================================================
+RANK #1: REV7 - Rev7p
+Grade: A
+======================================================================
+
+>>> HIGHLY RECOMMENDED - Strong candidate for further validation
+
+Sequence length: 245 aa
+Position: 1 - 245
+
+SCORES:
+  Overall Score:        0.856
+  Immunogenicity:       0.840
+  Mutation Stability:   0.787
+  Safety Score:         1.000
+
+SCORING BREAKDOWN:
+  Immunogenicity factors:
+    - Base epitope score: 0.540
+    - Multiple epitopes bonus: +0.200
+    - T-cell + B-cell diversity bonus: +0.1
+  Stability factors:
+    - Base conservation: 0.537
+    - Cysteine bonds (4): +0.150
+    - Proline rigidity (10): +0.100
+
+EPITOPES FOUND: 20
+  B-cell epitopes: 19
+  T-cell epitopes: 1
+  IEDB matches:    0
+
+  Top 5 epitopes by score:
+    - ESIFGSLF                (T-cell, pos: 1-245, score: 0.88)
+    - ELGHKLDRNRRVDSLEEKAE... (B-cell, pos: 151-192, score: 0.55)
+    - DFSELQHVDKDDQIITETEV    (B-cell, pos: 94-113, score: 0.54)
+    - DEFRSSLNS               (B-cell, pos: 115-123, score: 0.54)
+    - LNGVYSQYEEGESIFGS       (B-cell, pos: 227-243, score: 0.53)
+
+SUGGESTED mRNA SEQUENCE (first 90 nt):
+  5'-ATGAACCGGTGGGTGGAGAAGTGGCTGCGGGTGTACCTGAAGTGCTACATCAACCTGATCCTGTTCTACCGGAACGTGTACCCCCCCCAG...-3'
+  Total length: 738 nt
+
+======================================================================
+RANK #2: AXL2 - Axl2p
+Grade: A
+======================================================================
+
+>>> HIGHLY RECOMMENDED - Strong candidate for further validation
+
+Sequence length: 823 aa
+Position: 1 - 823
+
+SCORES:
+  Overall Score:        0.841
+  Immunogenicity:       0.830
+  Mutation Stability:   0.753
+  Safety Score:         1.000
+
+SCORING BREAKDOWN:
+  Immunogenicity factors:
+    - Base epitope score: 0.530
+    - Multiple epitopes bonus: +0.200
+    - T-cell + B-cell diversity bonus: +0.1
+  Stability factors:
+    - Base conservation: 0.503
+    - Cysteine bonds (4): +0.150
+    - Proline rigidity (49): +0.100
+
+EPITOPES FOUND: 59
+  B-cell epitopes: 58
+  T-cell epitopes: 1
+  IEDB matches:    0
+
+  Top 5 epitopes by score:
+    - HGRIPEML                (T-cell, pos: 1-823, score: 0.90)
+    - FDLEAPEKEKRTSRDVTMSS... (B-cell, pos: 695-717, score: 0.56)
+    - GMDSKITHSNHSANATSTRS... (B-cell, pos: 438-493, score: 0.56)
+    - NTLKLDNHSATESDISSVDE... (B-cell, pos: 589-619, score: 0.56)
+    - WRRRRENPDDENLPHAISG     (B-cell, pos: 529-547, score: 0.55)
+
+SUGGESTED mRNA SEQUENCE (first 90 nt):
+  5'-ATGACCCAGCTGCAGATCAGCCTGCTGCTGACCGCCACCATCAGCCTGCTGCACCTGGTGGTGGCCACCCCCTACGAGGCCTACCCCATC...-3'
+  Total length: 2472 nt
+
+======================================================================
+RANK #3: unknown - TCP1-beta
+Grade: B
+======================================================================
+
+>>> RECOMMENDED - Good candidate with moderate confidence
+
+Sequence length: 67 aa
+Position: 1 - 67
+
+SCORES:
+  Overall Score:        0.773
+  Immunogenicity:       0.848
+  Mutation Stability:   0.495
+  Safety Score:         1.000
+
+SCORING BREAKDOWN:
+  Immunogenicity factors:
+    - Base epitope score: 0.548
+    - Multiple epitopes bonus: +0.200
+    - T-cell + B-cell diversity bonus: +0.1
+  Stability factors:
+    - Base conservation: 0.475
+    - Proline rigidity (1): +0.020
+
+EPITOPES FOUND: 10
+  B-cell epitopes: 9
+  T-cell epitopes: 1
+  IEDB matches:    0
+
+  Top 5 epitopes by score:
+    - RTANRQHM                (T-cell, pos: 1-67, score: 0.86)
+    - GIVESYKLKRAVVSSASEAA... (B-cell, pos: 26-48, score: 0.54)
+    - IRARPRTANRQHM           (B-cell, pos: 55-67, score: 0.54)
+    - STSGLDLNNGT             (B-cell, pos: 8-18, score: 0.51)
+    - DLNNGTIAD               (B-cell, pos: 13-21, score: 0.51)
+
+SUGGESTED mRNA SEQUENCE (first 90 nt):
+  5'-AGCAGCATCTACAACGGCATCAGCACCAGCGGCCTGGACCTGAACAACGGCACCATCGCCGACATGCGGCAGCTGGGCATCGTGGAGAGC...-3'
+  Total length: 204 nt

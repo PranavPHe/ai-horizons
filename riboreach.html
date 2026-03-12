@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RiboReach — AI Vaccine Education Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand"><i data-lucide="dna" style="width:24px;height:24px;color:var(--accent-cyan);"></i> <span class="highlight-text">AI Horizons</span></a>
+    <ul class="topnav-links">
+      <li><a href="index.html"><i data-lucide="home" style="width:16px;height:16px;"></i> Home</a></li>
+      <li><a href="riboreach.html" class="active"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> RiboReach</a></li>
+      <li><a href="vaxflow.html"><i data-lucide="truck" style="width:16px;height:16px;"></i> VaxFlow</a></li>
+      <li><a href="viroseek.html"><i data-lucide="microscope" style="width:16px;height:16px;"></i> ViroSeek</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="app-page">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <div style="margin-bottom:24px;">
+      <div style="font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px;" class="highlight-text"><i data-lucide="shield-check" style="width:24px;height:24px;"></i> RiboReach</div>
+      <div class="text-muted" style="font-size:.78rem;margin-top:4px;">Vaccine Education Platform</div>
+    </div>
+
+    <h4>Tools</h4>
+    <div class="sidebar-item active" onclick="showSection('analyze')"><i data-lucide="search" style="width:18px;height:18px;"></i> Analyze Text</div>
+    <div class="sidebar-item" onclick="showSection('dashboard')"><i data-lucide="bar-chart-3" style="width:18px;height:18px;"></i> Dashboard</div>
+
+    <div style="margin-top:auto;padding-top:30px;">
+      <div class="stat-card" style="background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.2);">
+        <div class="value text-violet" style="font-size:1.3rem;" id="sidebar-total">0</div>
+        <div class="label">Texts Analysed</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="app-content">
+
+    <!-- ===== ANALYZE SECTION ===== -->
+    <div id="sec-analyze" class="app-section">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Misinformation Analyser</div>
+        </div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Enter any vaccine-related text. RiboReach will classify it, detect specific misinformation claims, and generate a personalised educational response.</p>
+
+        <div class="form-group">
+          <label class="form-label">Enter text to analyse</label>
+          <textarea class="form-textarea" id="analyzeInput" rows="3" placeholder="e.g. &quot;Vaccines contain microchips to track people&quot; or &quot;I can't afford to get vaccinated&quot;"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="analyzeText()">Analyse →</button>
+        <button class="btn btn-outline btn-sm" style="margin-left:8px;" onclick="loadExample()">Load Example</button>
+      </div>
+
+      <!-- Results -->
+      <div id="analyzeResults" class="hidden">
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Classification Result</div>
+            <span id="resultConfidence" class="tag"></span>
+          </div>
+          <div class="stats-row mb-2">
+            <div class="stat-card">
+              <div class="value text-violet" id="resultCategory">—</div>
+              <div class="label">Category</div>
+            </div>
+            <div class="stat-card">
+              <div class="value" id="resultSeverity">—</div>
+              <div class="label">Severity</div>
+            </div>
+            <div class="stat-card">
+              <div class="value text-cyan" id="resultConfVal">—</div>
+              <div class="label">Confidence</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Myth vs Fact -->
+        <div id="mythFactSection" class="panel hidden">
+          <div class="panel-title mb-2">Myth vs. Fact</div>
+          <div class="callout callout-myth">
+            <span>❌</span>
+            <span id="mythText"></span>
+          </div>
+          <div class="callout callout-fact">
+            <span>✅</span>
+            <span id="factText"></span>
+          </div>
+        </div>
+
+        <!-- Dynamic Response -->
+        <div class="panel">
+          <div class="panel-title mb-2">Educational Response</div>
+          <h3 id="responseHeadline" class="mb-1"></h3>
+          <p id="responseExplanation" class="text-muted mb-2"></p>
+          <ul class="fact-list" id="responseFactsList"></ul>
+        </div>
+
+        <!-- Sources -->
+        <div class="panel">
+          <div class="panel-title mb-2">Learn More</div>
+          <ul class="fact-list" id="responseSources"></ul>
+          <p class="text-muted mt-2" id="responseFollowUp" style="font-style:italic;font-size:.9rem;"></p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD SECTION ===== -->
+    <div id="sec-dashboard" class="app-section hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Platform Analytics</div>
+        </div>
+        <div class="stats-row mb-3">
+          <div class="stat-card">
+            <div class="value text-cyan" id="dashTotal">0</div>
+            <div class="label">Total Analyses</div>
+          </div>
+          <div class="stat-card">
+            <div class="value text-red" id="dashMisinfo">0</div>
+            <div class="label">Misinformation</div>
+          </div>
+          <div class="stat-card">
+            <div class="value text-green" id="dashLegit">0</div>
+            <div class="label">Legitimate Concern</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title mb-2">Category Breakdown</div>
+        <div id="categoryBreakdown">
+          <p class="text-muted">Analyse some texts to see category statistics here.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title mb-2">Recent Analyses</div>
+        <div id="recentAnalyses">
+          <p class="text-muted">No analyses yet.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  <p>AI Horizons — RiboReach &copy; 2026</p>
+</footer>
+
+<script>
+/* ============================================================
+   RiboReach Client-Side Engine with API Integration
+   Mirrors the Python dynamic_responder.py logic
+   ============================================================ */
+
+const API_BASE = 'http://localhost:5003';
+let useAPI = false;
+
+// Check API availability on load
+async function checkAPI() {
+  try {
+    const res = await fetch(`${API_BASE}/api/health`);
+    if (res.ok) {
+      useAPI = true;
+      console.log('RiboReach API connected');
+    }
+  } catch (e) {
+    console.log('RiboReach API unavailable, using client-side engine');
+  }
+}
+checkAPI();
+
+// --- State ---
+const state = {
+  analysisCount: 0,
+  misinfoCount: 0,
+  legitCount: 0,
+  history: [],
+  categories: {}
+};
+
+// --- Navigation ---
+function showSection(id) {
+  document.querySelectorAll('.app-section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('sec-' + id).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// --- Examples (both misinformation and legitimate concerns) ---
+const EXAMPLES = [
+  // Clear misinformation
+  "Vaccines contain microchips to track people",
+  "Vaccines cause autism in children",
+  "mRNA vaccines alter your DNA permanently",
+  "Big pharma is hiding the truth about vaccine deaths",
+  "The government is using vaccines to control us",
+  // Legitimate concerns (should NOT be flagged as misinformation)
+  "I'm worried about vaccine side effects for my children",
+  "Is the COVID vaccine safe for someone with allergies?",
+  "Should I get vaccinated if I already had COVID?",
+  "What ingredients are in the vaccine?",
+  "I've heard some concerning things and want to understand better",
+  "Where can I get vaccinated near me?",
+  "I'm nervous about getting the shot, is that normal?"
+];
+function loadExample() {
+  const el = document.getElementById('analyzeInput');
+  el.value = EXAMPLES[Math.floor(Math.random() * EXAMPLES.length)];
+  el.focus();
+}
+
+// ============================================================
+//  CLAIM EXTRACTORS — mirrors dynamic_responder.py
+// ============================================================
+const CLAIM_EXTRACTORS = {
+  tracking: /(track|tracking|monitor|surveillance|spy|spying|watch\b)/i,
+  chip:     /(microchip|chip|nanochip|nanobot|rfid)/i,
+  fiveG:    /(5g|5-g|five g)/i,
+  magnetic: /(magnet|magnetic|metal|stick)/i,
+  dna:      /(dna|genetic|gene|genome|modify|alter\b)/i,
+  infertility: /(infertil|steril|reproduct|pregnan)/i,
+  death:    /(death|die|dying|kill|deadly|lethal|fatal)/i,
+  control:  /(control|population|depopulation|agenda|nwo|new world order)/i,
+  profit:   /(profit|money|rich|pharma|pharmaceutical|billion|corrupt)/i,
+  untested: /(untest|not test|never test|skip|rushed|fast|quick|experimental)/i,
+  autism:   /(autism|autistic)/i,
+  government: /(government|gov\b|federal|state|cia|fbi|military)/i,
+  cost:     /(cost|costly|expensive|afford|price|pric[ey]|cheap|pay\b|insurance|coverage|\$|dollar|budget)/i,
+  access:   /(access|available|availability|where to get|hard to get|can't get|underserved|rural|clinic|pharmacy)/i,
+  sideEffects: /(side effect|adverse|reaction|sore|headache|fever|myocarditis|blood clot)/i,
+  natural:  /(natural immun|herd immun|immune system|god.?given)/i,
+  ingredients: /(ingredient|mercury|aluminum|thimerosal|formaldehyde|preservative|graphene)/i,
+  efficacy: /(doesn.?t work|don.?t work|useless|ineffective|not effective|still get sick|breakthrough)/i,
+  trust:    /(don.?t trust|can.?t trust|lying|cover.?up|corrupt|big pharma|wake up|sheeple)/i,
+};
+
+// ============================================================
+//  INTENT DETECTION — distinguish misinformation from concerns
+// ============================================================
+const CONCERN_PATTERNS = [
+  /\b(worried|concern|scared|afraid|nervous|anxious|unsure|hesitant)\b/i,
+  /\b(should i|is it safe|can i|will it|what if|wondering)\b/i,
+  /\?/,  // Questions
+  /\b(heard that|someone told me|read that|saw online)\b/i,
+  /\b(don'?t know|not sure|confused about)\b/i,
+  /\b(my (child|children|kids|baby|family))\b/i,
+  /\b(considering|thinking about|deciding)\b/i,
+];
+
+const MISINFO_CLAIM_PATTERNS = [
+  /vaccines? (cause|causes|caused|causing|will cause)/i,
+  /(it'?s|they'?re|vaccines? are) (a )?(lie|hoax|scam|fake|fraud)/i,
+  /(proven|fact|know|truth):?\s*(that\s*)?vaccines?/i,
+  /vaccines? (don'?t|doesn'?t|never|won'?t) (work|help|protect)/i,
+  /vaccines? (contain|have|put|inject|are full of)\s*(microchip|chip|5g|graphene|poison|tracker)/i,
+  /(big pharma|they|government) (is |are )?(hiding|covering|lying|don'?t want)/i,
+  /wake up|open your eyes|sheeple|do your research/i,
+  /(kill|murder|genocide|depopulation|sterilize|infertility)/i,
+];
+
+const INFO_SEEKING_PATTERNS = [
+  /^(what|where|how|when|why|which|can you|could you)/i,
+  /\b(tell me|explain|help me understand|more info|learn about)\b/i,
+  /\b(schedule|appointment|cost|location|available|eligible)\b/i,
+];
+
+function classifyIntent(text) {
+  const misinfoMatches = MISINFO_CLAIM_PATTERNS.filter(p => p.test(text)).length;
+  const concernMatches = CONCERN_PATTERNS.filter(p => p.test(text)).length;
+  const infoMatches = INFO_SEEKING_PATTERNS.filter(p => p.test(text)).length;
+  
+  // Strong misinformation language
+  if (misinfoMatches >= 2) return { type: 'misinformation', modifier: 1.0 };
+  
+  // Expressing concern without making false claims
+  if (concernMatches >= 2 && misinfoMatches === 0) return { type: 'legitimate_concern', modifier: 0.3 };
+  
+  // Asking questions
+  if (infoMatches >= 1 && misinfoMatches === 0) return { type: 'question', modifier: 0.2 };
+  
+  // Mixed signals
+  if (concernMatches > misinfoMatches) return { type: 'legitimate_concern', modifier: 0.5 };
+  if (misinfoMatches > 0) return { type: 'misinformation', modifier: 0.8 };
+  
+  return { type: 'neutral', modifier: 0.5 };
+}
+
+// ============================================================
+//  TOPIC OVERRIDES — non-misinformation
+// ============================================================
+const TOPIC_OVERRIDE_PATTERNS = [
+  { regex: /\b(cost|costly|expensive|afford|price|cheap|free|pay|insurance|coverage)\b/i, topic: 'cost_access' },
+  { regex: /\b(where|how|find|get|locate|nearby)\b.*\b(vaccin|shot|immuniz)/i, topic: 'cost_access' },
+  { regex: /\b(vaccin|shot|immuniz).*\b(where|how|find|get|locate|nearby)\b/i, topic: 'cost_access' },
+];
+const MISINFO_EXCLUDES = /(track|spy|chip|5g|magnet|dna|autism|infertil|kill|poison|conspir|lie|lying|fake|hoax|depopulat|bioweapon|plandemic|scam)/i;
+
+function detectTopicOverride(text) {
+  if (MISINFO_EXCLUDES.test(text)) return null;
+  for (const p of TOPIC_OVERRIDE_PATTERNS) {
+    if (p.regex.test(text)) return p.topic;
+  }
+  return null;
+}
+
+// ============================================================
+//  CLASSIFIER — keyword scoring
+// ============================================================
+const CATEGORY_KEYWORDS = {
+  conspiracy:        ['conspiracy','microchip','chip','track','5g','magnet','spy','surveillance','nwo','depopulation','plandemic','hoax','control','bill gates','population','nanochip','nanobot'],
+  vaccine_safety:    ['safe','safety','dangerous','risk','harm','injury','adverse','hurt','damage','toxic','poison','side effect','reaction'],
+  rushed_development:['rushed','fast','quick','experimental','untested','not tested','skipped','guinea pig','warp speed','emergency','too quickly'],
+  ingredient_fear:   ['ingredient','mercury','aluminum','thimerosal','chemical','graphene','fetal','preservative','formaldehyde','adjuvant'],
+  natural_immunity:  ['natural immunity','natural is better','immune system','herd immunity','god given','already had','recovered'],
+  side_effects:      ['side effect','adverse','myocarditis','blood clot','bell palsy','guillain','anaphylaxis','allergic','reaction','sore','fever','headache'],
+  vaccine_efficacy:  ['doesn\'t work','don\'t work','useless','ineffective','not effective','still get sick','breakthrough','waning','not working'],
+  distrust_authority:['don\'t trust','can\'t trust','lying','cover up','corrupt','big pharma','government','fda','cdc','who','agenda','truth','honest','hidden'],
+};
+
+function classify(text) {
+  const lower = text.toLowerCase();
+  let best = 'vaccine_safety', bestScore = 0;
+  for (const [cat, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
+    let score = 0;
+    for (const kw of keywords) {
+      if (lower.includes(kw)) score += 1;
+    }
+    if (score > bestScore) { bestScore = score; best = cat; }
+  }
+  const confidence = Math.min(0.95, 0.3 + bestScore * 0.15);
+  return { category: best, confidence, score: bestScore };
+}
+
+// ============================================================
+//  EDUCATIONAL FRAMEWORKS
+// ============================================================
+const FRAMEWORKS = {
+  conspiracy: {
+    headline: 'Let\'s Examine This Claim',
+    explanation: 'This is a common piece of misinformation. Let\'s look at what would need to be true for this to work, and what independent evidence actually shows.',
+    facts: [
+      'Vaccines are developed by thousands of independent researchers globally',
+      'All vaccine data is published and peer-reviewed openly',
+      'Multiple competing organisations verify safety independently',
+      'Consider who benefits from spreading unverified health claims'
+    ],
+    sources: ['Independent scientific journals (Nature, Lancet, NEJM)', 'University research departments', 'World Health Organization (WHO)', 'Your personal healthcare provider']
+  },
+  vaccine_safety: {
+    headline: 'Understanding Vaccine Safety',
+    explanation: 'It\'s completely reasonable to want to understand safety. Here\'s what the research and monitoring systems actually show.',
+    facts: [
+      'Vaccines undergo 3 phases of clinical trials with thousands of participants',
+      'Post-approval monitoring continues indefinitely through multiple systems',
+      'Adverse events are tracked through VAERS, V-safe, and other databases',
+      'Serious side effects are extremely rare compared to disease risks'
+    ],
+    sources: ['FDA Vaccine Approval Process', 'CDC VAERS Database', 'Clinical trial publications', 'Your doctor or pharmacist']
+  },
+  rushed_development: {
+    headline: 'How Vaccine Development Actually Worked',
+    explanation: 'Understanding how the process actually worked can help address these concerns. Steps were overlapped, not skipped.',
+    facts: [
+      'mRNA technology has been researched since the 1990s — over 30 years',
+      'Previous coronavirus research (SARS, MERS) provided a head start',
+      'Massive global funding enabled running trial phases in parallel',
+      'Regulatory review was prioritised and given dedicated resources, not shortened'
+    ],
+    sources: ['mRNA research history publications', 'FDA Emergency Use Authorization docs', 'Timeline of regulatory reviews']
+  },
+  ingredient_fear: {
+    headline: 'Understanding What\'s in Vaccines',
+    explanation: 'Every ingredient serves a specific, documented purpose, and amounts are far below any level that could cause harm.',
+    facts: [
+      'Every ingredient has a specific purpose: antigens, adjuvants, stabilisers, preservatives',
+      'Amounts are orders of magnitude below harmful levels',
+      'The same ingredients appear in many common foods and medicines',
+      'Full ingredient lists are publicly available for every vaccine'
+    ],
+    sources: ['CDC Vaccine Ingredients List', 'Package inserts (publicly available)', 'Toxicology reference materials']
+  },
+  natural_immunity: {
+    headline: 'Natural vs. Vaccine Immunity',
+    explanation: 'Both provide protection, but they come with very different risk profiles. Let\'s compare.',
+    facts: [
+      'Natural immunity requires surviving the actual disease first, with real risks',
+      'Disease can cause severe illness, long-term effects, or death',
+      'Vaccine immunity provides protection without disease risks',
+      'Hybrid immunity (infection + vaccine) provides the strongest protection'
+    ],
+    sources: ['Immunology studies on natural vs. vaccine immunity', 'Long COVID research', 'CDC immunity guidance']
+  },
+  side_effects: {
+    headline: 'Understanding Side Effects in Context',
+    explanation: 'Understanding risk in context is important. Most side effects are mild, temporary, and indicate your immune system is working.',
+    facts: [
+      'Common side effects (soreness, fatigue, mild fever) are temporary immune responses',
+      'These indicate your immune system is building protection',
+      'Serious side effects are tracked globally and are extremely rare',
+      'Disease complications are far more likely and more severe than vaccine side effects'
+    ],
+    sources: ['Vaccine side effect data', 'Disease complication statistics', 'Risk comparison studies']
+  },
+  vaccine_efficacy: {
+    headline: 'How Vaccine Effectiveness Is Measured',
+    explanation: 'Vaccine effectiveness is nuanced — it\'s about reducing severe illness and death, not just preventing any infection.',
+    facts: [
+      'Vaccines significantly reduce severe illness, hospitalisation, and death',
+      'Effectiveness against mild infection may vary by variant',
+      'Population-level protection helps even imperfect vaccines save lives',
+      'Boosters help maintain protection as immunity naturally wanes over time'
+    ],
+    sources: ['Clinical trial efficacy data', 'Real-world effectiveness studies', 'Hospitalisation statistics by vaccination status']
+  },
+  distrust_authority: {
+    headline: 'Finding Trustworthy Information',
+    explanation: 'Your skepticism is understandable. Let\'s focus on finding information sources you can verify yourself.',
+    facts: [
+      'You have every right to ask questions and be skeptical',
+      'Look for consensus among independent, competing organisations',
+      'Your personal healthcare provider can discuss your specific situation',
+      'Primary scientific data is publicly available for anyone to review'
+    ],
+    sources: ['Your personal healthcare provider', 'Independent academic research', 'Peer-reviewed scientific journals']
+  },
+  cost_access: {
+    headline: 'Vaccine Cost and Accessibility Options',
+    explanation: 'That\'s a valid concern. The good news is there are many programs to help make vaccines affordable and accessible.',
+    facts: [
+      'Many vaccines are available at no cost through federal programs (VFC, Bridge Access Program)',
+      'Under the ACA, most insurance plans cover all recommended vaccines with no copay',
+      'Community health centres offer vaccinations on a sliding fee scale based on income',
+      'Pharmacies like CVS, Walgreens, and Walmart offer walk-in vaccinations with insurance',
+      'Vaccines.gov helps you find free or low-cost providers near your ZIP code'
+    ],
+    sources: ['Vaccines.gov — Find vaccines near you', 'CDC Vaccines for Children (VFC) Program', 'Healthcare.gov — Preventive care benefits', 'Your local health department', 'findahealthcenter.hrsa.gov']
+  },
+  general_question: {
+    headline: 'About Vaccines',
+    explanation: 'Great question. Here\'s what you should know.',
+    facts: [
+      'Vaccines are one of the most effective public health tools ever developed',
+      'They train your immune system to recognise and fight specific diseases',
+      'Vaccination has eliminated or nearly eliminated many dangerous diseases',
+      'Both individual and community protection increase with vaccination rates'
+    ],
+    sources: ['CDC Vaccine Information', 'WHO Immunisation Resources', 'Your personal healthcare provider']
+  }
+};
+
+// ============================================================
+//  MYTH vs FACT database
+// ============================================================
+const MYTH_FACTS = {
+  tracking:    { myth: 'Vaccines contain microchips or tracking devices', fact: 'Vaccines contain no electronic components. The needle is far too small to deliver any device, and no such injectable tracking technology exists.' },
+  chip:        { myth: 'Vaccines contain microchips', fact: 'Vaccine needles are 0.5–0.8mm wide — far too small for any electronic device. No power source could fit inside a vaccine dose.' },
+  fiveG:       { myth: 'Vaccines are connected to 5G networks', fact: 'Vaccines are biological preparations with no electronic components. 5G is a radio frequency standard. There is no possible connection.' },
+  magnetic:    { myth: 'Vaccines make you magnetic', fact: 'Vaccines contain no magnetic materials. Skin adhesion effects are caused by moisture and oils, not magnetism.' },
+  dna:         { myth: 'mRNA vaccines change your DNA', fact: 'mRNA never enters the cell nucleus. It provides temporary instructions that degrade within days. Your DNA remains unchanged.' },
+  infertility: { myth: 'Vaccines cause infertility', fact: 'Multiple large studies show no effect on fertility. Many vaccinated people have had healthy pregnancies and babies.' },
+  autism:      { myth: 'Vaccines cause autism', fact: 'The original study was retracted for fraud. Numerous studies involving millions of children found zero connection.' },
+  untested:    { myth: 'COVID vaccines were untested or rushed', fact: 'Vaccines completed all required trial phases with tens of thousands of participants. Steps were overlapped, not skipped.' },
+  profit:      { myth: 'Vaccines are just about pharmaceutical profits', fact: 'Vaccines are among the least profitable pharma products. Many are distributed at cost or free. Preventing disease saves far more than vaccines cost.' },
+  government:  { myth: 'Vaccines are government control tools', fact: 'Vaccines are developed by independent scientists, reviewed by international bodies, and administered by local healthcare providers.' },
+};
+
+function getMythFact(claims) {
+  for (const key of Object.keys(MYTH_FACTS)) {
+    if (claims[key]) return MYTH_FACTS[key];
+  }
+  return null;
+}
+
+// ============================================================
+//  MAIN ANALYSE FUNCTION
+// ============================================================
+function analyzeText() {
+  const text = document.getElementById('analyzeInput').value.trim();
+  if (!text) return;
+
+  if (useAPI) {
+    // Use ML backend API
+    fetch(`${API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.success) {
+        displayAnalysisResults(text, data.classification, data.response);
+      } else {
+        console.error('API error:', data.error);
+        analyzeTextFallback(text);
+      }
+    })
+    .catch(e => {
+      console.error('API call failed:', e);
+      analyzeTextFallback(text);
+    });
+  } else {
+    analyzeTextFallback(text);
+  }
+}
+
+function analyzeTextFallback(text) {
+  // First classify intent - misinformation vs legitimate concern
+  const intent = classifyIntent(text);
+  
+  // Extract claims for additional context
+  const claims = {};
+  for (const [k, regex] of Object.entries(CLAIM_EXTRACTORS)) {
+    if (regex.test(text)) claims[k] = true;
+  }
+
+  // Check for topic overrides (cost/access questions)
+  const override = detectTopicOverride(text);
+  let category, confidence;
+
+  if (override) {
+    category = override;
+    confidence = 0.95;
+  } else {
+    const result = classify(text);
+    category = result.category;
+    confidence = result.confidence;
+  }
+
+  // Adjust based on intent
+  let isMisinformation = true;
+  let severity = 'low';
+  
+  if (intent.type === 'legitimate_concern' || intent.type === 'question') {
+    isMisinformation = false;
+    severity = 'none';
+    confidence *= intent.modifier;
+  } else if (intent.type === 'misinformation') {
+    isMisinformation = true;
+    confidence = Math.min(0.95, confidence * intent.modifier);
+  }
+  
+  // For non-misinformation categories
+  if (category === 'cost_access' || category === 'general_question') {
+    isMisinformation = false;
+    severity = 'none';
+  } else if (isMisinformation) {
+    if (confidence > 0.7) severity = 'high';
+    else if (confidence > 0.4) severity = 'medium';
+  }
+
+  // Get appropriate response framework
+  let response;
+  if (isMisinformation) {
+    const framework = FRAMEWORKS[category] || FRAMEWORKS.general_question;
+    const mythFact = getMythFact(claims);
+    response = {
+      headline: framework.headline,
+      explanation: framework.explanation,
+      key_facts: framework.facts,
+      myth: mythFact?.myth,
+      fact: mythFact?.fact,
+      sources: framework.sources
+    };
+  } else {
+    // Generate supportive response for legitimate concerns
+    response = generateConcernResponse(category, intent.type);
+  }
+
+  displayAnalysisResults(text, {
+    category,
+    confidence,
+    severity,
+    is_misinformation: isMisinformation,
+    intent_type: intent.type
+  }, response);
+}
+
+// Generate supportive responses for legitimate concerns
+function generateConcernResponse(category, intentType) {
+  const concernResponses = {
+    vaccine_safety: {
+      headline: "Your Safety Concerns Are Valid",
+      explanation: "It's completely reasonable to want to understand vaccine safety. Many people share these concerns, and asking questions is a healthy part of making informed decisions.",
+      key_facts: [
+        "All vaccines go through rigorous clinical trials before approval",
+        "Safety monitoring continues long after vaccines are approved",
+        "You can discuss your specific concerns with your healthcare provider",
+        "Serious side effects are rare and carefully tracked"
+      ],
+      sources: ["Your healthcare provider", "CDC.gov/vaccines", "FDA vaccine information"]
+    },
+    side_effects: {
+      headline: "Understanding Side Effects",
+      explanation: "Worrying about side effects is natural. Most vaccine side effects are mild and temporary, but it's good to know what to expect.",
+      key_facts: [
+        "Common side effects include soreness, fatigue, and mild fever",
+        "These usually resolve within 1-2 days",
+        "Serious side effects are very rare but are monitored closely",
+        "Talk to your doctor about any specific health conditions"
+      ],
+      sources: ["CDC Side Effect Information", "Your pharmacist", "Vaccine package inserts"]
+    },
+    rushed_development: {
+      headline: "Understanding Development Speed",
+      explanation: "Questions about how quickly vaccines were developed are understandable. Let me explain what actually happened.",
+      key_facts: [
+        "mRNA vaccine technology was researched for over 30 years before COVID",
+        "Development phases were run in parallel, not skipped",
+        "Global funding and coordination accelerated timelines",
+        "Full safety trials were completed before authorization"
+      ],
+      sources: ["FDA approval documentation", "Scientific publications on mRNA research history"]
+    },
+    ingredient_fear: {
+      headline: "Understanding Vaccine Ingredients",
+      explanation: "Wanting to know what's in vaccines is completely fair. Full ingredient lists are publicly available.",
+      key_facts: [
+        "Every ingredient has a specific purpose and is tested for safety",
+        "Ingredient amounts are carefully measured and well below harmful levels",
+        "You can review the full ingredient list with your healthcare provider"
+      ],
+      sources: ["Vaccine package inserts", "CDC ingredient information", "Your pharmacist"]
+    }
+  };
+
+  const defaultResponse = {
+    headline: "Thank You for Your Question",
+    explanation: "Asking questions about vaccines is an important part of making informed health decisions. Here's some information that might help.",
+    key_facts: [
+      "Talk to your healthcare provider about your specific situation",
+      "Reputable sources include CDC.gov and WHO.int",
+      "It's okay to take time to make your decision"
+    ],
+    sources: ["Your healthcare provider", "CDC.gov", "WHO.int"]
+  };
+
+  const response = concernResponses[category] || defaultResponse;
+  response.follow_up = intentType === 'question' 
+    ? "Would you like more specific information about any of these points?"
+    : "Would you like to discuss your specific concerns further?";
+  
+  return response;
+}
+
+function displayAnalysisResults(text, classification, response) {
+  const category = classification.category;
+  const confidence = classification.confidence;
+  const severity = classification.severity || 'low';
+  const intentType = classification.intent_type || 'neutral';
+  const isMisinformation = classification.is_misinformation;
+  
+  // Color coding based on whether it's misinformation or concern
+  let severityColor = 'var(--accent-green)';
+  let categoryLabel = category.replace(/_/g, ' ');
+  
+  if (isMisinformation) {
+    if (severity === 'high') severityColor = 'var(--accent-red)';
+    else if (severity === 'medium') severityColor = 'var(--accent-amber)';
+    categoryLabel = '⚠️ ' + categoryLabel;
+  } else {
+    // For legitimate concerns, show green and add context
+    severityColor = 'var(--accent-green)';
+    if (intentType === 'legitimate_concern') {
+      categoryLabel = '💬 Concern: ' + categoryLabel;
+    } else if (intentType === 'question') {
+      categoryLabel = '❓ Question about ' + categoryLabel;
+    }
+  }
+
+  document.getElementById('resultCategory').textContent = categoryLabel;
+  document.getElementById('resultSeverity').textContent = isMisinformation ? severity : (intentType === 'question' ? 'info request' : 'legitimate concern');
+  document.getElementById('resultSeverity').style.color = severityColor;
+  document.getElementById('resultConfVal').textContent = Math.round(confidence * 100) + '%';
+  document.getElementById('resultConfidence').textContent = Math.round(confidence * 100) + '% confidence';
+
+  // Myth vs Fact - only show for actual misinformation
+  const mfSection = document.getElementById('mythFactSection');
+  if (isMisinformation && response && response.myth && response.fact) {
+    mfSection.classList.remove('hidden');
+    document.getElementById('mythText').textContent = response.myth;
+    document.getElementById('factText').textContent = response.fact;
+  } else {
+    mfSection.classList.add('hidden');
+  }
+
+  // Response
+  if (response) {
+    document.getElementById('responseHeadline').textContent = response.headline || 'Analysis Complete';
+    document.getElementById('responseExplanation').textContent = response.explanation || '';
+
+    const factsList = document.getElementById('responseFactsList');
+    factsList.innerHTML = '';
+    for (const fact of (response.key_facts || [])) {
+      const li = document.createElement('li');
+      li.textContent = fact;
+      factsList.appendChild(li);
+    }
+
+    const sourcesList = document.getElementById('responseSources');
+    sourcesList.innerHTML = '';
+    for (const src of (response.sources || [])) {
+      const li = document.createElement('li');
+      li.textContent = src;
+      sourcesList.appendChild(li);
+    }
+
+    document.getElementById('responseFollowUp').textContent = response.follow_up || '💡 Would you like to discuss any specific aspect further?';
+  }
+
+  document.getElementById('analyzeResults').classList.remove('hidden');
+
+  // Update state - properly track whether it was misinformation or legitimate concern
+  state.analysisCount++;
+  if (isMisinformation) state.misinfoCount++; else state.legitCount++;
+  state.categories[category] = (state.categories[category] || 0) + 1;
+  state.history.unshift({ 
+    text: text.slice(0,80), 
+    category, 
+    confidence, 
+    isMisinformation,
+    intentType,
+    time: new Date().toLocaleTimeString() 
+  });
+  if (state.history.length > 20) state.history.pop();
+
+  updateDashboard();
+}
+
+// ============================================================
+//  DASHBOARD UPDATE
+// ============================================================
+function updateDashboard() {
+  document.getElementById('sidebarTotal') && (document.getElementById('sidebarTotal').textContent = state.analysisCount);
+  document.getElementById('sidebar-total').textContent = state.analysisCount;
+  document.getElementById('dashTotal').textContent = state.analysisCount;
+  document.getElementById('dashMisinfo').textContent = state.misinfoCount;
+  document.getElementById('dashLegit').textContent = state.legitCount;
+
+  // Category breakdown
+  const catDiv = document.getElementById('categoryBreakdown');
+  if (Object.keys(state.categories).length) {
+    const total = Object.values(state.categories).reduce((a,b)=>a+b,0);
+    catDiv.innerHTML = '';
+    for (const [cat, count] of Object.entries(state.categories).sort((a,b)=>b[1]-a[1])) {
+      const pct = Math.round(count/total*100);
+      catDiv.innerHTML += `
+        <div style="display:flex;align-items:center;margin-bottom:10px;">
+          <span style="width:160px;font-size:.85rem;color:var(--text-muted);">${cat.replace(/_/g,' ')}</span>
+          <div class="progress" style="flex:1;margin:0 12px;">
+            <div class="progress-fill" style="width:${pct}%;background:var(--gradient);"></div>
+          </div>
+          <span style="width:60px;text-align:right;font-size:.85rem;">${count} (${pct}%)</span>
+        </div>`;
+    }
+  }
+
+  // Recent analyses
+  const recDiv = document.getElementById('recentAnalyses');
+  if (state.history.length) {
+    recDiv.innerHTML = '<table class="data-table"><thead><tr><th>Time</th><th>Text</th><th>Category</th><th>Confidence</th></tr></thead><tbody>' +
+      state.history.map(h => `<tr><td>${h.time}</td><td>${h.text}${h.text.length>=80?'…':''}</td><td><span class="tag">${h.category.replace(/_/g,' ')}</span></td><td>${Math.round(h.confidence*100)}%</td></tr>`).join('') +
+      '</tbody></table>';
+  }
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

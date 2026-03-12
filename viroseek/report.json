@@ -1,0 +1,765 @@
+{
+  "total_candidates": 3,
+  "candidates": [
+    {
+      "rank": 1,
+      "gene_name": "REV7",
+      "protein_name": "Rev7p",
+      "sequence": "MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQFVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVDKDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEKLISGDDKILNGVYSQYEEGESIFGSLF",
+      "length": 245,
+      "scores": {
+        "overall": 0.8558909870809435,
+        "immunogenicity": 0.8397411578353565,
+        "mutation_stability": 0.786734693877551,
+        "safety": 1.0
+      },
+      "epitopes": [
+        {
+          "sequence": "YRNVYPPQSFDYTTYQS",
+          "start": 23,
+          "end": 39,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5230858024691358
+        },
+        {
+          "sequence": "DYTTYQSFN",
+          "start": 33,
+          "end": 41,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.527377777777778
+        },
+        {
+          "sequence": "NRHPALIDY",
+          "start": 49,
+          "end": 57,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.500425
+        },
+        {
+          "sequence": "DVLSKLTHV",
+          "start": 64,
+          "end": 72,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5113722222222222
+        },
+        {
+          "sequence": "LSKLTHVYR",
+          "start": 66,
+          "end": 74,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.504825
+        },
+        {
+          "sequence": "CIINKKNDLCIEKYV",
+          "start": 78,
+          "end": 92,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5186734126984127
+        },
+        {
+          "sequence": "EKYVLDFSE",
+          "start": 89,
+          "end": 97,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5218083333333334
+        },
+        {
+          "sequence": "DFSELQHVDKDDQIITETEV",
+          "start": 94,
+          "end": 113,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5415300925925925
+        },
+        {
+          "sequence": "ITETEVFDEFRSS",
+          "start": 108,
+          "end": 120,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5179744444444444
+        },
+        {
+          "sequence": "DEFRSSLNS",
+          "start": 115,
+          "end": 123,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5361805555555554
+        },
+        {
+          "sequence": "HLEKLPKVNDDTITFEAV",
+          "start": 127,
+          "end": 144,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5296888888888889
+        },
+        {
+          "sequence": "ELELGHKLD",
+          "start": 149,
+          "end": 157,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5045305555555555
+        },
+        {
+          "sequence": "ELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGF",
+          "start": 151,
+          "end": 192,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5458067810457516
+        },
+        {
+          "sequence": "PDNNGFQPPK",
+          "start": 187,
+          "end": 196,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.523888888888889
+        },
+        {
+          "sequence": "QPPKIKLTS",
+          "start": 193,
+          "end": 201,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5181277777777777
+        },
+        {
+          "sequence": "KLTSLVGSDVGP",
+          "start": 198,
+          "end": 209,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.513351388888889
+        },
+        {
+          "sequence": "SEKLISGDDKI",
+          "start": 216,
+          "end": 226,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5333666666666667
+        },
+        {
+          "sequence": "ISGDDKILNGVYS",
+          "start": 220,
+          "end": 232,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5086972222222222
+        },
+        {
+          "sequence": "LNGVYSQYEEGESIFGS",
+          "start": 227,
+          "end": 243,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5341123456790124
+        },
+        {
+          "sequence": "ESIFGSLF",
+          "start": 1,
+          "end": 245,
+          "type": "T-cell",
+          "source": "predicted",
+          "score": 0.88
+        }
+      ],
+      "suggested_mrna": "ATGAACCGGTGGGTGGAGAAGTGGCTGCGGGTGTACCTGAAGTGCTACATCAACCTGATCCTGTTCTACCGGAACGTGTACCCCCCCCAGAGCTTCGACTACACCACCTACCAGAGCTTCAACCTGCCCCAGTTCGTGCCCATCAACCGGCACCCCGCCCTGATCGACTACATCGAGGAGCTGATCCTGGACGTGCTGAGCAAGCTGACCCACGTGTACCGGTTCAGCATCTGCATCATCAACAAGAAGAACGACCTGTGCATCGAGAAGTACGTGCTGGACTTCAGCGAGCTGCAGCACGTGGACAAGGACGACCAGATCATCACCGAGACCGAGGTGTTCGACGAGTTCCGGAGCAGCCTGAACAGCCTGATCATGCACCTGGAGAAGCTGCCCAAGGTGAACGACGACACCATCACCTTCGAGGCCGTGATCAACGCCATCGAGCTGGAGCTGGGCCACAAGCTGGACCGGAACCGGCGGGTGGACAGCCTGGAGGAGAAGGCCGAGATCGAGCGGGACAGCAACTGGGTGAAGTGCCAGGAGGACGAGAACCTGCCCGACAACAACGGCTTCCAGCCCCCCAAGATCAAGCTGACCAGCCTGGTGGGCAGCGACGTGGGCCCCCTGATCATCCACCAGTTCAGCGAGAAGCTGATCAGCGGCGACGACAAGATCCTGAACGGCGTGTACAGCCAGTACGAGGAGGGCGAGAGCATCTTCGGCAGCCTGTTCTGA"
+    },
+    {
+      "rank": 2,
+      "gene_name": "AXL2",
+      "protein_name": "Axl2p",
+      "sequence": "MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESFTFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFNVILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNEVFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPETSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYVYLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYGDVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQDHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIACGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLNNPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQSQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDSYGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPEML",
+      "length": 823,
+      "scores": {
+        "overall": 0.8409245251785817,
+        "immunogenicity": 0.8300993541238705,
+        "mutation_stability": 0.7529161603888214,
+        "safety": 1.0
+      },
+      "epitopes": [
+        {
+          "sequence": "HLVVATPYE",
+          "start": 18,
+          "end": 26,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5056277777777778
+        },
+        {
+          "sequence": "VVATPYEAYPIGKQYPPVARVNESFT",
+          "start": 20,
+          "end": 45,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5160546296296297
+        },
+        {
+          "sequence": "TFQISNDTYKSSVDKTAQITYNC",
+          "start": 45,
+          "end": 67,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5529201851851852
+        },
+        {
+          "sequence": "TYNCFDLPS",
+          "start": 64,
+          "end": 72,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5048361111111112
+        },
+        {
+          "sequence": "LSFDSSSRTFSGEPSSDLLSDANTT",
+          "start": 74,
+          "end": 98,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5372305555555555
+        },
+        {
+          "sequence": "LSDANTTLYF",
+          "start": 92,
+          "end": 101,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5051513888888889
+        },
+        {
+          "sequence": "NVILEGTDSADSTSLNNTYQ",
+          "start": 102,
+          "end": 121,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5488884259259259
+        },
+        {
+          "sequence": "QFVVTNRPS",
+          "start": 121,
+          "end": 129,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.50935
+        },
+        {
+          "sequence": "VVTNRPSISLSSDFN",
+          "start": 123,
+          "end": 137,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.516479761904762
+        },
+        {
+          "sequence": "LKNYGYTNGKNALKLDPNEV",
+          "start": 142,
+          "end": 161,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5219458333333333
+        },
+        {
+          "sequence": "KLDPNEVFN",
+          "start": 155,
+          "end": 163,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5126472222222223
+        },
+        {
+          "sequence": "DPNEVFNVT",
+          "start": 157,
+          "end": 165,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5224083333333334
+        },
+        {
+          "sequence": "DRSMFTNEES",
+          "start": 167,
+          "end": 176,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5248777777777778
+        },
+        {
+          "sequence": "FTNEESIVSYYGRSQLYNAP",
+          "start": 171,
+          "end": 190,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5192287037037037
+        },
+        {
+          "sequence": "DSGELKFTGT",
+          "start": 198,
+          "end": 207,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5090458333333333
+        },
+        {
+          "sequence": "TGTAPVINSA",
+          "start": 205,
+          "end": 214,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5067458333333335
+        },
+        {
+          "sequence": "INSAIAPETSYSFV",
+          "start": 211,
+          "end": 224,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5185013888888889
+        },
+        {
+          "sequence": "DIEGFSAVE",
+          "start": 229,
+          "end": 237,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5044888888888888
+        },
+        {
+          "sequence": "EGFSAVEVE",
+          "start": 231,
+          "end": 239,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5208555555555556
+        },
+        {
+          "sequence": "SAVEVEFEL",
+          "start": 234,
+          "end": 242,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5015611111111112
+        },
+        {
+          "sequence": "AHQLTTSIQNS",
+          "start": 246,
+          "end": 256,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5071685185185185
+        },
+        {
+          "sequence": "INVTDTGNVSYDLP",
+          "start": 259,
+          "end": 272,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5376837962962963
+        },
+        {
+          "sequence": "NVSYDLPLN",
+          "start": 266,
+          "end": 274,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5027277777777778
+        },
+        {
+          "sequence": "PLNYVYLDDDPISSDKLGSIN",
+          "start": 272,
+          "end": 292,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5319442307692308
+        },
+        {
+          "sequence": "LDNATISGSVPDELLGKNSNPANFSVS",
+          "start": 302,
+          "end": 328,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5204934210526316
+        },
+        {
+          "sequence": "NFSVSIYDT",
+          "start": 324,
+          "end": 332,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5033222222222222
+        },
+        {
+          "sequence": "SVSIYDTYGDV",
+          "start": 326,
+          "end": 336,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.525051851851852
+        },
+        {
+          "sequence": "YDTYGDVIY",
+          "start": 330,
+          "end": 338,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5136583333333332
+        },
+        {
+          "sequence": "NFEVVSTTDLF",
+          "start": 340,
+          "end": 350,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5125111111111111
+        },
+        {
+          "sequence": "SSLPNINATR",
+          "start": 353,
+          "end": 362,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5043569444444445
+        },
+        {
+          "sequence": "PNINATRGE",
+          "start": 356,
+          "end": 364,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5228805555555555
+        },
+        {
+          "sequence": "PSQFTDYVNTNVSLE",
+          "start": 372,
+          "end": 386,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.524377380952381
+        },
+        {
+          "sequence": "NTNVSLEFTNSSQDHDWVKF",
+          "start": 380,
+          "end": 399,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5280578703703703
+        },
+        {
+          "sequence": "DHDWVKFQSSN",
+          "start": 393,
+          "end": 403,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5033833333333334
+        },
+        {
+          "sequence": "VKFQSSNLT",
+          "start": 397,
+          "end": 405,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5074222222222222
+        },
+        {
+          "sequence": "QSSNLTLAGE",
+          "start": 400,
+          "end": 409,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5056777777777779
+        },
+        {
+          "sequence": "TLAGEVPKN",
+          "start": 405,
+          "end": 413,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.521136111111111
+        },
+        {
+          "sequence": "AGEVPKNFDKLSL",
+          "start": 407,
+          "end": 419,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.520901111111111
+        },
+        {
+          "sequence": "GLKANQGSQSQELY",
+          "start": 420,
+          "end": 433,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5413527777777778
+        },
+        {
+          "sequence": "SQSQELYFN",
+          "start": 427,
+          "end": 435,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.508325
+        },
+        {
+          "sequence": "GMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPA",
+          "start": 438,
+          "end": 493,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5575997685185186
+        },
+        {
+          "sequence": "PAALPAANKTSSHNKKAVAIACG",
+          "start": 488,
+          "end": 510,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5469807407407408
+        },
+        {
+          "sequence": "WRRRRENPDDENLPHAISG",
+          "start": 529,
+          "end": 547,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5549967171717172
+        },
+        {
+          "sequence": "LPHAISGPDLNNPANKPNQENATPLNNP",
+          "start": 541,
+          "end": 568,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5329434722222223
+        },
+        {
+          "sequence": "TPLNNPFDDDASSYDDTSIARRLA",
+          "start": 563,
+          "end": 586,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5531847222222223
+        },
+        {
+          "sequence": "NTLKLDNHSATESDISSVDEKRDSLSGMNTY",
+          "start": 589,
+          "end": 619,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5564898550724637
+        },
+        {
+          "sequence": "LSGMNTYNDQ",
+          "start": 613,
+          "end": 622,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5153930555555555
+        },
+        {
+          "sequence": "NTYNDQFQSQSKEELLAKPPV",
+          "start": 617,
+          "end": 637,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5358305555555556
+        },
+        {
+          "sequence": "LAKPPVQPPESPF",
+          "start": 632,
+          "end": 644,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5359416666666668
+        },
+        {
+          "sequence": "QPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGN",
+          "start": 638,
+          "end": 671,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5275955128205129
+        },
+        {
+          "sequence": "RYTGNLSPVSDIVRDSYGSQKTVDTEKLFD",
+          "start": 667,
+          "end": 696,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.541158207070707
+        },
+        {
+          "sequence": "DTEKLFDLE",
+          "start": 690,
+          "end": 698,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5154
+        },
+        {
+          "sequence": "FDLEAPEKEKRTSRDVTMSSLDP",
+          "start": 695,
+          "end": 717,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.562162037037037
+        },
+        {
+          "sequence": "SSLDPWNSN",
+          "start": 713,
+          "end": 721,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5147083333333333
+        },
+        {
+          "sequence": "DPWNSNISP",
+          "start": 716,
+          "end": 724,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5043305555555555
+        },
+        {
+          "sequence": "NSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTT",
+          "start": 719,
+          "end": 763,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5412634384384385
+        },
+        {
+          "sequence": "ITPTTMSTSSSDDFVPVKDGENFC",
+          "start": 759,
+          "end": 782,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5416369791666666
+        },
+        {
+          "sequence": "VHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPE",
+          "start": 784,
+          "end": 821,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5369686111111112
+        },
+        {
+          "sequence": "HGRIPEML",
+          "start": 1,
+          "end": 823,
+          "type": "T-cell",
+          "source": "predicted",
+          "score": 0.9
+        }
+      ],
+      "suggested_mrna": "ATGACCCAGCTGCAGATCAGCCTGCTGCTGACCGCCACCATCAGCCTGCTGCACCTGGTGGTGGCCACCCCCTACGAGGCCTACCCCATCGGCAAGCAGTACCCCCCCGTGGCCCGGGTGAACGAGAGCTTCACCTTCCAGATCAGCAACGACACCTACAAGAGCAGCGTGGACAAGACCGCCCAGATCACCTACAACTGCTTCGACCTGCCCAGCTGGCTGAGCTTCGACAGCAGCAGCCGGACCTTCAGCGGCGAGCCCAGCAGCGACCTGCTGAGCGACGCCAACACCACCCTGTACTTCAACGTGATCCTGGAGGGCACCGACAGCGCCGACAGCACCAGCCTGAACAACACCTACCAGTTCGTGGTGACCAACCGGCCCAGCATCAGCCTGAGCAGCGACTTCAACCTGCTGGCCCTGCTGAAGAACTACGGCTACACCAACGGCAAGAACGCCCTGAAGCTGGACCCCAACGAGGTGTTCAACGTGACCTTCGACCGGAGCATGTTCACCAACGAGGAGAGCATCGTGAGCTACTACGGCCGGAGCCAGCTGTACAACGCCCCCCTGCCCAACTGGCTGTTCTTCGACAGCGGCGAGCTGAAGTTCACCGGCACCGCCCCCGTGATCAACAGCGCCATCGCCCCCGAGACCAGCTACAGCTTCGTGATCATCGCCACCGACATCGAGGGCTTCAGCGCCGTGGAGGTGGAGTTCGAGCTGGTGATCGGCGCCCACCAGCTGACCACCAGCATCCAGAACAGCCTGATCATCAACGTGACCGACACCGGCAACGTGAGCTACGACCTGCCCCTGAACTACGTGTACCTGGACGACGACCCCATCAGCAGCGACAAGCTGGGCAGCATCAACCTGCTGGACGCCCCCGACTGGGTGGCCCTGGACAACGCCACCATCAGCGGCAGCGTGCCCGACGAGCTGCTGGGCAAGAACAGCAACCCCGCCAACTTCAGCGTGAGCATCTACGACACCTACGGCGACGTGATCTACTTCAACTTCGAGGTGGTGAGCACCACCGACCTGTTCGCCATCAGCAGCCTGCCCAACATCAACGCCACCCGGGGCGAGTGGTTCAGCTACTACTTCCTGCCCAGCCAGTTCACCGACTACGTGAACACCAACGTGAGCCTGGAGTTCACCAACAGCAGCCAGGACCACGACTGGGTGAAGTTCCAGAGCAGCAACCTGACCCTGGCCGGCGAGGTGCCCAAGAACTTCGACAAGCTGAGCCTGGGCCTGAAGGCCAACCAGGGCAGCCAGAGCCAGGAGCTGTACTTCAACATCATCGGCATGGACAGCAAGATCACCCACAGCAACCACAGCGCCAACGCCACCAGCACCCGGAGCAGCCACCACAGCACCAGCACCAGCAGCTACACCAGCAGCACCTACACCGCCAAGATCAGCAGCACCAGCGCCGCCGCCACCAGCAGCGCCCCCGCCGCCCTGCCCGCCGCCAACAAGACCAGCAGCCACAACAAGAAGGCCGTGGCCATCGCCTGCGGCGTGGCCATCCCCCTGGGCGTGATCCTGGTGGCCCTGATCTGCTTCCTGATCTTCTGGCGGCGGCGGCGGGAGAACCCCGACGACGAGAACCTGCCCCACGCCATCAGCGGCCCCGACCTGAACAACCCCGCCAACAAGCCCAACCAGGAGAACGCCACCCCCCTGAACAACCCCTTCGACGACGACGCCAGCAGCTACGACGACACCAGCATCGCCCGGCGGCTGGCCGCCCTGAACACCCTGAAGCTGGACAACCACAGCGCCACCGAGAGCGACATCAGCAGCGTGGACGAGAAGCGGGACAGCCTGAGCGGCATGAACACCTACAACGACCAGTTCCAGAGCCAGAGCAAGGAGGAGCTGCTGGCCAAGCCCCCCGTGCAGCCCCCCGAGAGCCCCTTCTTCGACCCCCAGAACCGGAGCAGCAGCGTGTACATGGACAGCGAGCCCGCCGTGAACAAGAGCTGGCGGTACACCGGCAACCTGAGCCCCGTGAGCGACATCGTGCGGGACAGCTACGGCAGCCAGAAGACCGTGGACACCGAGAAGCTGTTCGACCTGGAGGCCCCCGAGAAGGAGAAGCGGACCAGCCGGGACGTGACCATGAGCAGCCTGGACCCCTGGAACAGCAACATCAGCCCCAGCCCCGTGCGGAAGAGCGTGACCCCCAGCCCCTACAACGTGACCAAGCACCGGAACCGGCACCTGCAGAACATCCAGGACAGCCAGAGCGGCAAGAACGGCATCACCCCCACCACCATGAGCACCAGCAGCAGCGACGACTTCGTGCCCGTGAAGGACGGCGAGAACTTCTGCTGGGTGCACAGCATGGAGCCCGACCGGCGGCCCAGCAAGAAGCGGCTGGTGGACTTCAGCAACAAGAGCAACGTGAACGTGGGCCAGGTGAAGGACATCCACGGCCGGATCCCCGAGATGCTGTGA"
+    },
+    {
+      "rank": 3,
+      "gene_name": "unknown",
+      "protein_name": "TCP1-beta",
+      "sequence": "SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM",
+      "length": 67,
+      "scores": {
+        "overall": 0.772820347705915,
+        "immunogenicity": 0.8484168148148149,
+        "mutation_stability": 0.4953731343283582,
+        "safety": 1.0
+      },
+      "epitopes": [
+        {
+          "sequence": "SSIYNGISTS",
+          "start": 1,
+          "end": 10,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5055666666666667
+        },
+        {
+          "sequence": "NGISTSGLD",
+          "start": 5,
+          "end": 13,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5101583333333334
+        },
+        {
+          "sequence": "STSGLDLNNGT",
+          "start": 8,
+          "end": 18,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5106064814814816
+        },
+        {
+          "sequence": "DLNNGTIAD",
+          "start": 13,
+          "end": 21,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5105472222222223
+        },
+        {
+          "sequence": "GIVESYKLKRAVVSSASEAAEVL",
+          "start": 26,
+          "end": 48,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5380083333333333
+        },
+        {
+          "sequence": "SEAAEVLLR",
+          "start": 42,
+          "end": 50,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5047333333333334
+        },
+        {
+          "sequence": "RVDNIIRAR",
+          "start": 50,
+          "end": 58,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5001333333333333
+        },
+        {
+          "sequence": "DNIIRARPR",
+          "start": 52,
+          "end": 60,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5069138888888889
+        },
+        {
+          "sequence": "IRARPRTANRQHM",
+          "start": 55,
+          "end": 67,
+          "type": "B-cell",
+          "source": "predicted",
+          "score": 0.5375005555555555
+        },
+        {
+          "sequence": "RTANRQHM",
+          "start": 1,
+          "end": 67,
+          "type": "T-cell",
+          "source": "predicted",
+          "score": 0.8600000000000001
+        }
+      ],
+      "suggested_mrna": "AGCAGCATCTACAACGGCATCAGCACCAGCGGCCTGGACCTGAACAACGGCACCATCGCCGACATGCGGCAGCTGGGCATCGTGGAGAGCTACAAGCTGAAGCGGGCCGTGGTGAGCAGCGCCAGCGAGGCCGCCGAGGTGCTGCTGCGGGTGGACAACATCATCCGGGCCCGGCCCCGGACCGCCAACCGGCAGCACATGTGA"
+    }
+  ]
+}

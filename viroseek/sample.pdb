@@ -1,0 +1,24 @@
+HEADER    SAMPLE PROTEIN                          17-FEB-26   TEST
+TITLE     SAMPLE PDB FILE FOR TESTING
+COMPND    MOL_ID: 1;
+COMPND   2 MOLECULE: SAMPLE PEPTIDE;
+COMPND   3 CHAIN: A
+MODEL        1
+ATOM      1  N   ALA A   1       0.000   0.000   0.000  1.00 20.00           N
+ATOM      2  CA  ALA A   1       1.458   0.000   0.000  1.00 20.00           C
+ATOM      3  C   ALA A   1       2.009   1.420   0.000  1.00 20.00           C
+ATOM      4  O   ALA A   1       1.246   2.390   0.000  1.00 20.00           O
+ATOM      5  CB  ALA A   1       1.986  -0.760  -1.220  1.00 20.00           C
+ATOM      6  N   GLY A   2       3.320   1.540   0.000  1.00 20.00           N
+ATOM      7  CA  GLY A   2       3.930   2.860   0.000  1.00 20.00           C
+ATOM      8  C   GLY A   2       5.440   2.800   0.000  1.00 20.00           C
+ATOM      9  O   GLY A   2       6.060   1.740   0.000  1.00 20.00           O
+ATOM     10  N   VAL A   3       6.030   3.990   0.000  1.00 20.00           N
+ATOM     11  CA  VAL A   3       7.480   4.120   0.000  1.00 20.00           C
+ATOM     12  C   VAL A   3       8.030   5.540   0.000  1.00 20.00           C
+ATOM     13  O   VAL A   3       7.270   6.510   0.000  1.00 20.00           O
+ATOM     14  CB  VAL A   3       8.040   3.350  -1.210  1.00 20.00           C
+ATOM     15  CG1 VAL A   3       9.560   3.430  -1.210  1.00 20.00           C
+ATOM     16  CG2 VAL A   3       7.480   3.930  -2.510  1.00 20.00           C
+ENDMDL
+END

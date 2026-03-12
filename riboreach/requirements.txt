@@ -1,0 +1,26 @@
+# RiboReach - AI-Powered Misinformation Counter & Personalized Education
+# Core ML/NLP libraries
+numpy>=1.21.0
+pandas>=1.4.0
+scikit-learn>=1.0.0
+
+# NLP & Text Processing
+nltk>=3.7
+textblob>=0.17.0
+
+# Embeddings & Similarity
+sentence-transformers>=2.2.0
+
+# Data validation
+pydantic>=2.0.0
+
+# Utilities
+joblib>=1.1.0
+tqdm>=4.62.0
+
+# Visualization
+matplotlib>=3.5.0
+
+# Optional: Deep Learning
+# torch>=2.0.0
+# transformers>=4.20.0

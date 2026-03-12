@@ -1,0 +1,174 @@
+{
+    "version": "1.0.0",
+    "last_updated": "2026-03-09",
+    "categories": {
+        "vaccine_safety": {
+            "description": "False claims about vaccine dangers",
+            "patterns": [
+                "vaccines? (cause|causes|causing) \\w+",
+                "dangerous vaccine",
+                "vaccine injury",
+                "harmed? by vaccine",
+                "vaccine death",
+                "toxic vaccine",
+                "poison"
+            ],
+            "keywords": ["autism", "death", "injury", "harm", "toxic", "poison", "kill"],
+            "example_claims": [
+                "Vaccines cause autism in children",
+                "The vaccine killed my friend",
+                "These toxic vaccines are injuring people"
+            ],
+            "severity_weight": 1.0
+        },
+        "conspiracy": {
+            "description": "Conspiracy theories about vaccines",
+            "patterns": [
+                "big pharma",
+                "government control",
+                "population control",
+                "microchip",
+                "5g",
+                "bill gates",
+                "new world order",
+                "plandemic",
+                "cover-?up",
+                "they don'?t want you to know"
+            ],
+            "keywords": ["microchip", "tracking", "control", "gates", "pharma", "nwo", "illuminati"],
+            "example_claims": [
+                "Vaccines contain microchips for tracking",
+                "Bill Gates wants to depopulate through vaccines",
+                "Big pharma is covering up the truth"
+            ],
+            "severity_weight": 0.9
+        },
+        "ingredient_fear": {
+            "description": "Fear of specific vaccine ingredients",
+            "patterns": [
+                "mercury",
+                "aluminum",
+                "aborted fetal",
+                "fetal cells",
+                "graphene",
+                "magnetic",
+                "nano-?particles",
+                "chemicals?"
+            ],
+            "keywords": ["mercury", "aluminum", "graphene", "fetal", "chemical", "toxin", "heavy metal"],
+            "example_claims": [
+                "Vaccines contain dangerous levels of mercury",
+                "They put aborted fetal cells in vaccines",
+                "The vaccine has graphene oxide nanobots"
+            ],
+            "severity_weight": 0.7
+        },
+        "natural_immunity": {
+            "description": "Claims that natural immunity is superior",
+            "patterns": [
+                "natural immunity (is )?better",
+                "immune system can handle",
+                "don'?t need vaccine",
+                "my body my choice",
+                "survived covid without"
+            ],
+            "keywords": ["natural", "immunity", "survived", "recovered", "antibodies"],
+            "example_claims": [
+                "Natural immunity is better than vaccine immunity",
+                "I survived COVID so I don't need the vaccine",
+                "My immune system can handle it naturally"
+            ],
+            "severity_weight": 0.5
+        },
+        "rushed_development": {
+            "description": "Concerns about development speed",
+            "patterns": [
+                "rushed",
+                "experimental",
+                "not tested",
+                "guinea pig",
+                "long-?term effects unknown",
+                "too fast",
+                "skipped trials?"
+            ],
+            "keywords": ["rushed", "experimental", "untested", "trials", "guinea pig", "fast"],
+            "example_claims": [
+                "The vaccine was rushed and not properly tested",
+                "We're all guinea pigs for this experimental vaccine",
+                "They skipped important safety trials"
+            ],
+            "severity_weight": 0.6
+        },
+        "side_effects": {
+            "description": "Exaggerated side effect claims",
+            "patterns": [
+                "myocarditis",
+                "blood clots?",
+                "infertility",
+                "sterile",
+                "miscarriage",
+                "heart (attack|problem)",
+                "sudden death",
+                "vaers"
+            ],
+            "keywords": ["myocarditis", "clot", "infertility", "sterile", "heart", "stroke", "death"],
+            "example_claims": [
+                "The vaccine causes blood clots and heart attacks",
+                "Vaccines are causing infertility in women",
+                "VAERS shows thousands of vaccine deaths"
+            ],
+            "severity_weight": 0.8
+        },
+        "vaccine_efficacy": {
+            "description": "Doubts about vaccine effectiveness",
+            "patterns": [
+                "doesn'?t (work|prevent)",
+                "still got (sick|covid)",
+                "vaccinated people spreading",
+                "useless",
+                "doesn'?t stop transmission"
+            ],
+            "keywords": ["useless", "ineffective", "still sick", "spreading", "breakthrough"],
+            "example_claims": [
+                "The vaccine doesn't even work, people still get COVID",
+                "Vaccinated people are spreading the virus",
+                "The vaccine is useless against new variants"
+            ],
+            "severity_weight": 0.5
+        },
+        "distrust_authority": {
+            "description": "Distrust of health authorities",
+            "patterns": [
+                "cdc (lies?|lying)",
+                "fda corrupt",
+                "can'?t trust",
+                "paid off",
+                "conflicts? of interest",
+                "fauci",
+                "silencing doctors?"
+            ],
+            "keywords": ["cdc", "fda", "fauci", "corrupt", "lies", "trust", "censorship"],
+            "example_claims": [
+                "The CDC is lying to us about vaccine safety",
+                "Fauci has conflicts of interest with pharma",
+                "They're silencing doctors who speak out"
+            ],
+            "severity_weight": 0.6
+        }
+    },
+    "severity_indicators": {
+        "high": ["death", "kill", "murder", "genocide", "depopulation", "poison", "deadly"],
+        "medium": ["dangerous", "harmful", "toxic", "experimental", "untested", "injury"],
+        "low": ["concern", "question", "worry", "unsure", "skeptical", "doubt"]
+    },
+    "factual_indicators": [
+        "according to research",
+        "studies show",
+        "clinical trials",
+        "peer reviewed",
+        "evidence suggests",
+        "data indicates",
+        "cdc recommends",
+        "fda approved"
+    ]
+}

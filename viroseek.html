@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViroSeek — Vaccine Candidate Discovery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .viroseek-container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+        
+        .viroseek-header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+        
+        .viroseek-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 16px 0;
+        }
+        
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: var(--accent-cyan); }
+        .stat-label { font-size: 0.82rem; color: var(--text-muted); }
+        
+        .section-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+        
+        .chart-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            height: 320px;
+        }
+        
+        .candidates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 20px;
+        }
+        
+        .candidate-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border);
+        }
+        
+        .candidate-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+        
+        .card-header {
+            padding: 16px;
+            background: rgba(78,205,196,.08);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-cyan);
+            color: #0f1419;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .card-grade {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        
+        .grade-a { background: var(--accent-green); color: #0f1419; }
+        .grade-b { background: var(--accent-blue); color: #fff; }
+        .grade-c { background: var(--accent-amber); color: #0f1419; }
+        .grade-d { background: var(--accent-red); color: #fff; }
+        
+        .card-body { padding: 16px; }
+        
+        .score-bars { margin: 12px 0; }
+        
+        .score-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .score-label { width: 120px; font-size: 0.85rem; color: var(--text-muted); }
+        
+        .score-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .score-fill.immuno { background: var(--accent-green); }
+        .score-fill.stability { background: var(--accent-blue); }
+        .score-fill.safety { background: var(--accent-violet); }
+        .score-fill.overall { background: var(--accent-cyan); }
+        
+        .score-value { width: 50px; text-align: right; font-weight: bold; font-size: 0.85rem; }
+        
+        .recommendation {
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(69,179,105,.1);
+            border-left: 3px solid var(--accent-green);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.85rem;
+        }
+        
+        .recommendation.caution {
+            background: rgba(224,85,85,.1);
+            border-left-color: var(--accent-red);
+        }
+        
+        .protein-map {
+            position: relative;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        
+        .protein-backbone {
+            position: absolute;
+            top: 50%;
+            left: 8px;
+            right: 8px;
+            height: 6px;
+            background: #333;
+            transform: translateY(-50%);
+            border-radius: 3px;
+        }
+        
+        .epitope-marker {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: height 0.2s;
+        }
+        
+        .epitope-marker:hover { height: 24px; }
+        .epitope-marker.bcell { background: rgba(69, 179, 105, 0.7); }
+        .epitope-marker.tcell { background: rgba(224, 85, 85, 0.7); }
+        .epitope-marker.iedb { background: rgba(240, 165, 0, 0.7); }
+        
+        .map-legend {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+        
+        .mrna-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        
+        .mrna-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .mrna-sequence {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            word-break: break-all;
+            line-height: 1.5;
+            color: var(--accent-cyan);
+            max-height: 80px;
+            overflow-y: auto;
+        }
+        
+        .mrna-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        
+        .copy-btn {
+            background: var(--accent-cyan);
+            border: none;
+            color: #0f1419;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover { background: #5dd9d0; }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .comparison-table th {
+            background: rgba(78,205,196,.08);
+            font-weight: 600;
+            color: var(--accent-cyan);
+            font-size: 0.78rem;
+        }
+        
+        .comparison-table tr:hover td { background: rgba(255,255,255,.03); }
+        
+        .export-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+        
+        .export-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text);
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .export-btn:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(78,205,196,.08);
+        }
+        
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+        
+        .tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: none;
+            border-radius: 6px 6px 0 0;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab.active { background: rgba(78,205,196,.15); color: var(--accent-cyan); }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        @media (max-width: 900px) {
+            .candidates-grid, .charts-grid { grid-template-columns: 1fr; }
+            .stats-bar { flex-wrap: wrap; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand"><i data-lucide="dna" style="width:24px;height:24px;color:var(--accent-cyan);"></i> <span class="highlight-text">AI Horizons</span></a>
+    <ul class="topnav-links">
+      <li><a href="index.html"><i data-lucide="home" style="width:16px;height:16px;"></i> Home</a></li>
+      <li><a href="riboreach.html"><i data-lucide="message-circle" style="width:16px;height:16px;"></i> RiboReach</a></li>
+      <li><a href="vaxflow.html"><i data-lucide="truck" style="width:16px;height:16px;"></i> VaxFlow</a></li>
+      <li><a href="viroseek.html" class="active"><i data-lucide="microscope" style="width:16px;height:16px;"></i> ViroSeek</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="app-page">
+
+  <!-- Sidebar -->
+  <aside class="app-sidebar">
+    <div style="margin-bottom:24px;">
+      <div style="font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px;" class="highlight-text"><i data-lucide="dna" style="width:24px;height:24px;"></i> ViroSeek</div>
+      <div class="text-muted" style="font-size:.78rem;margin-top:4px;">Vaccine Candidate Discovery</div>
+    </div>
+
+    <h4>Modules</h4>
+    <div class="sidebar-item active" onclick="showSection('analyze')"><i data-lucide="flask-conical" style="width:18px;height:18px;"></i> Analyze Sequence</div>
+    <div class="sidebar-item" onclick="showSection('dashboard')"><i data-lucide="bar-chart-3" style="width:18px;height:18px;"></i> Dashboard</div>
+    <div class="sidebar-item" onclick="showSection('candidates')"><i data-lucide="list-ordered" style="width:18px;height:18px;"></i> Candidates</div>
+    <div class="sidebar-item" onclick="showSection('export')"><i data-lucide="download" style="width:18px;height:18px;"></i> Export</div>
+
+    <div style="margin-top:auto;padding-top:30px;">
+      <div class="stat-card" style="background:rgba(69,179,105,.08);border-color:rgba(69,179,105,.2);">
+        <div class="value text-green" style="font-size:1.3rem;" id="sidebar-candidates">0</div>
+        <div class="label">Candidates Found</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="app-content">
+
+    <!-- ===== ANALYZE SECTION ===== -->
+    <div id="sec-analyze" class="app-section">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Sequence Input & Analysis</div>
+        </div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Enter sequence data and configure analysis parameters to identify vaccine candidates.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Sequence Input</label>
+            <input class="form-input" type="text" id="seqInput" placeholder="NCBI Accession (e.g., NC_001802) or paste sequence">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Virus Name</label>
+            <input class="form-input" type="text" id="virusName" placeholder="e.g., SARS-CoV-2">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Variant Type</label>
+            <select class="form-select" id="variantType">
+              <option value="wild-type">Wild Type</option>
+              <option value="alpha">Alpha</option>
+              <option value="beta">Beta</option>
+              <option value="gamma">Gamma</option>
+              <option value="delta">Delta</option>
+              <option value="omicron">Omicron</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Host Taxonomy ID</label>
+            <input class="form-input" type="text" id="hostTaxId" value="9606" placeholder="9606 for human">
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <label class="form-label">Sequence Data (FASTA format)</label>
+          <textarea class="form-textarea" id="seqData" rows="4" placeholder=">sequence_name
+ATGCGTACGATCGATCG..."></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:16px;">
+          <div class="form-group">
+            <label class="form-label">PDB Structure (optional)</label>
+            <input class="form-input" type="text" id="pdbInput" placeholder="PDB ID (e.g., 6VXX)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Top Candidates</label>
+            <input class="form-input" type="number" id="topN" value="10" min="1" max="50">
+          </div>
+        </div>
+
+        <details style="margin-top:16px;">
+          <summary style="cursor:pointer;color:var(--accent-cyan);font-weight:600;font-size:.9rem;">Advanced Options</summary>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:12px;padding:16px;background:rgba(0,0,0,.15);border-radius:8px;">
+            <div class="form-group">
+              <label class="form-label">Immunogenicity Weight</label>
+              <input class="form-input" type="number" id="weightImmuno" value="0.5" step="0.1" min="0" max="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Stability Weight</label>
+              <input class="form-input" type="number" id="weightStability" value="0.3" step="0.1" min="0" max="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Safety Weight</label>
+              <input class="form-input" type="number" id="weightSafety" value="0.2" step="0.1" min="0" max="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="useIedb" checked style="width:auto;"> Query IEDB Database
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="genMrna" checked style="width:auto;"> Generate mRNA Variants
+              </label>
+            </div>
+          </div>
+        </details>
+
+        <div style="margin-top:20px;display:flex;gap:12px;">
+          <button class="btn btn-primary" onclick="runAnalysis()"><i data-lucide="play" style="width:16px;height:16px;"></i> Run Analysis</button>
+          <button class="btn btn-outline btn-sm" onclick="loadSampleData()"><i data-lucide="file-input" style="width:16px;height:16px;"></i> Load Sample</button>
+        </div>
+      </div>
+
+      <div id="analysisStatus" class="panel hidden">
+        <div class="panel-title mb-2">Analysis Progress</div>
+        <div id="progressText" class="text-muted" style="font-size:.9rem;">Initializing...</div>
+        <div class="progress mt-2" style="height:8px;">
+          <div class="progress-fill" id="progressBar" style="width:0;background:var(--accent-cyan);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD SECTION ===== -->
+    <div id="sec-dashboard" class="app-section hidden">
+      <div class="viroseek-header">
+        <h1><i data-lucide="bar-chart-3" style="width:28px;height:28px;color:var(--accent-cyan);"></i> Analysis Dashboard</h1>
+        <p class="text-muted">Run an analysis to view results</p>
+        <div class="stats-bar">
+          <div class="stat">
+            <div class="stat-value" id="dashboard-candidates">&mdash;</div>
+            <div class="stat-label">Candidates Analyzed</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="dashboard-epitopes">&mdash;</div>
+            <div class="stat-label">Epitopes Found</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="dashboard-high-conf">&mdash;</div>
+            <div class="stat-label">High Confidence</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <h2 class="section-title">Ranking Overview</h2>
+        <div class="charts-grid">
+          <div class="chart-container">
+            <canvas id="rankingChart"></canvas>
+          </div>
+          <div class="chart-container">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <h2 class="section-title">Comparison Table</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Gene</th>
+              <th>Protein</th>
+              <th>Length</th>
+              <th>Overall</th>
+              <th>Immuno.</th>
+              <th>Stability</th>
+              <th>Safety</th>
+              <th>B-cell</th>
+              <th>T-cell</th>
+              <th>Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="11" style="text-align:center;color:var(--text-muted);padding:24px;">Run an analysis to populate this table.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== CANDIDATES SECTION ===== -->
+    <div id="sec-candidates" class="app-section hidden">
+      <div class="panel">
+        <div class="panel-title mb-2">Vaccine Candidates</div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Detailed analysis of ranked vaccine candidates with epitope maps and mRNA sequences.</p>
+        
+        <div id="candidatesPlaceholder" style="text-align:center;padding:40px;color:var(--text-muted);">
+          <i data-lucide="flask-conical" style="width:48px;height:48px;margin-bottom:16px;opacity:0.5;"></i>
+          <p>No candidates yet. Run an analysis to see results.</p>
+        </div>
+        
+        <div class="candidates-grid" id="candidatesGrid" style="display:none;">
+          <!-- Dynamically populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EXPORT SECTION ===== -->
+    <div id="sec-export" class="app-section hidden">
+      <div class="panel">
+        <div class="panel-title mb-2">Export Results</div>
+        <p class="text-muted mb-2" style="font-size:.9rem;">Download analysis results in various formats for further processing or reporting.</p>
+        
+        <div id="exportPreview" class="mt-3" style="background:rgba(0,0,0,.2);border-radius:8px;padding:16px;margin-bottom:20px;">
+          <div class="text-muted" style="font-size:.85rem;margin-bottom:12px;">Data Preview:</div>
+          <div id="exportDataSummary" style="font-size:.9rem;">
+            <p style="color:var(--accent-amber);">No analysis results yet. Run an analysis first to export data.</p>
+          </div>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+          <button class="btn btn-primary" onclick="exportJSON()" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i data-lucide="file-json" style="width:18px;height:18px;"></i>
+            Export JSON
+          </button>
+          <button class="btn btn-primary" onclick="exportCSV()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent-green);">
+            <i data-lucide="file-spreadsheet" style="width:18px;height:18px;"></i>
+            Export CSV
+          </button>
+          <button class="btn btn-primary" onclick="exportFASTA()" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent-violet);">
+            <i data-lucide="dna" style="width:18px;height:18px;"></i>
+            Export mRNA (FASTA)
+          </button>
+          <button class="btn btn-outline" onclick="window.print()" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+            <i data-lucide="printer" style="width:18px;height:18px;"></i>
+            Print Report
+          </button>
+        </div>
+      </div>
+      
+      <div class="panel mt-3">
+        <div class="panel-title mb-2">Export Formats</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+          <div style="background:rgba(0,0,0,.15);border-radius:8px;padding:16px;">
+            <div style="font-weight:600;margin-bottom:6px;color:var(--accent-cyan);">JSON</div>
+            <p class="text-muted" style="font-size:.82rem;">Complete structured data including all scores, epitope details, sequences, and mRNA suggestions. Best for programmatic use.</p>
+          </div>
+          <div style="background:rgba(0,0,0,.15);border-radius:8px;padding:16px;">
+            <div style="font-weight:600;margin-bottom:6px;color:var(--accent-green);">CSV</div>
+            <p class="text-muted" style="font-size:.82rem;">Tabular format with candidate rankings, scores, and key metrics. Compatible with Excel, Google Sheets, and data analysis tools.</p>
+          </div>
+          <div style="background:rgba(0,0,0,.15);border-radius:8px;padding:16px;">
+            <div style="font-weight:600;margin-bottom:6px;color:var(--accent-violet);">FASTA</div>
+            <p class="text-muted" style="font-size:.82rem;">Optimized mRNA sequences in standard FASTA format. Ready for synthesis ordering or further bioinformatics analysis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// API configuration
+const API_BASE = 'http://localhost:5001';
+
+// Global state
+let analysisResults = null;
+let rankingChart = null;
+let radarChart = null;
+
+// Section navigation
+function showSection(name) {
+  document.querySelectorAll('.app-section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('sec-' + name).classList.remove('hidden');
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  event.target.closest('.sidebar-item').classList.add('active');
+}
+
+// Load sample data - uses NCBI accession for full genome analysis
+function loadSampleData() {
+  document.getElementById('seqInput').value = 'NC_045512';
+  document.getElementById('virusName').value = 'SARS-CoV-2';
+  document.getElementById('variantType').value = 'wild-type';
+  document.getElementById('hostTaxId').value = '9606';
+  document.getElementById('pdbInput').value = '6VXX';
+  document.getElementById('topN').value = '10';
+  // Clear FASTA textarea so the accession is used instead
+  document.getElementById('seqData').value = '';
+  
+  // Visual feedback
+  const btn = event.target;
+  const originalText = btn.innerHTML;
+  btn.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i> Loaded!';
+  lucide.createIcons();
+  setTimeout(() => {
+    btn.innerHTML = originalText;
+    lucide.createIcons();
+  }, 1500);
+}
+
+// Update progress UI
+function updateProgress(text, progress) {
+  document.getElementById('progressText').textContent = text;
+  document.getElementById('progressBar').style.width = progress + '%';
+}
+
+// Run analysis - calls the actual API
+async function runAnalysis() {
+  const statusPanel = document.getElementById('analysisStatus');
+  statusPanel.classList.remove('hidden');
+  
+  updateProgress('Preparing request...', 5);
+  
+  // Gather form data
+  const seqInput = document.getElementById('seqInput').value.trim();
+  const seqData = document.getElementById('seqData').value.trim();
+  const virusName = document.getElementById('virusName').value.trim();
+  const variantType = document.getElementById('variantType').value;
+  const hostTaxId = document.getElementById('hostTaxId').value.trim();
+  const pdbInput = document.getElementById('pdbInput').value.trim();
+  const topN = parseInt(document.getElementById('topN').value) || 10;
+  const weightImmuno = parseFloat(document.getElementById('weightImmuno').value) || 0.5;
+  const weightStability = parseFloat(document.getElementById('weightStability').value) || 0.3;
+  const weightSafety = parseFloat(document.getElementById('weightSafety').value) || 0.2;
+  const useIedb = document.getElementById('useIedb').checked;
+  const genMrna = document.getElementById('genMrna').checked;
+  
+  // Determine input type and value
+  let inputValue, inputType;
+  if (seqData) {
+    inputValue = seqData;
+    inputType = 'fasta';
+  } else if (seqInput) {
+    inputValue = seqInput;
+    inputType = seqInput.match(/^[A-Z]{1,2}_?\d+/i) ? 'accession' : 'fasta';
+  } else {
+    alert('Please enter a sequence input or paste FASTA data');
+    statusPanel.classList.add('hidden');
+    return;
+  }
+  
+  const payload = {
+    input: inputValue,
+    input_type: inputType,
+    virus_name: virusName || 'Unknown Virus',
+    variant: variantType,
+    host_tax_id: hostTaxId || '9606',
+    pdb_id: pdbInput || null,
+    top_n: topN,
+    weights: {
+      immunogenicity: weightImmuno,
+      stability: weightStability,
+      safety: weightSafety
+    },
+    use_iedb: useIedb,
+    generate_mrna: genMrna
+  };
+  
+  updateProgress('Connecting to analysis server...', 10);
+  
+  try {
+    updateProgress('Sending sequences for analysis...', 20);
+    
+    const response = await fetch(`${API_BASE}/api/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    
+    updateProgress('Processing response...', 60);
+    
+    const data = await response.json();
+    
+    if (!response.ok || data.error) {
+      throw new Error(data.error || 'Analysis failed');
+    }
+    
+    updateProgress('Rendering results...', 80);
+    
+    // Store results globally
+    analysisResults = data;
+    
+    // Update UI with results
+    updateDashboard(data);
+    updateCandidatesSection(data);
+    
+    updateProgress('Analysis complete!', 100);
+    
+    // Update sidebar stats
+    document.getElementById('sidebar-candidates').textContent = data.candidates.length;
+    
+    setTimeout(() => {
+      showSection('dashboard');
+      statusPanel.classList.add('hidden');
+      document.getElementById('progressBar').style.width = '0';
+    }, 500);
+    
+  } catch (error) {
+    console.error('Analysis error:', error);
+    updateProgress('Error: ' + error.message, 0);
+    document.getElementById('progressBar').style.background = 'var(--accent-red)';
+    
+    setTimeout(() => {
+      statusPanel.classList.add('hidden');
+      document.getElementById('progressBar').style.width = '0';
+      document.getElementById('progressBar').style.background = 'var(--accent-cyan)';
+      alert('Analysis failed: ' + error.message + '\n\nMake sure the API server is running:\ncd viroseek && python api.py');
+    }, 1000);
+  }
+}
+
+// Update dashboard charts with real data
+function updateDashboard(data) {
+  const chartData = data.candidates.slice(0, 10).map(c => ({
+    gene: c.gene_name.substring(0, 12),
+    overall: c.scores.overall,
+    immunogenicity: c.scores.immunogenicity,
+    stability: c.scores.mutation_stability,
+    safety: c.scores.safety
+  }));
+  
+  // Update header stats
+  const statsBar = document.querySelector('.stats-bar');
+  if (statsBar) {
+    const totalEpitopes = data.candidates.reduce((sum, c) => sum + (c.epitope_summary?.total || 0), 0);
+    const highConfidence = data.candidates.filter(c => c.grade === 'A' || c.grade === 'A+').length;
+    statsBar.innerHTML = `
+      <div class="stat">
+        <div class="stat-value">${data.candidates.length}</div>
+        <div class="stat-label">Candidates Analyzed</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">${totalEpitopes}</div>
+        <div class="stat-label">Epitopes Found</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">${highConfidence}</div>
+        <div class="stat-label">High Confidence</div>
+      </div>
+    `;
+  }
+
+  // Update dashboard subtitle with virus name
+  const dashboardSubtitle = document.querySelector('#sec-dashboard .viroseek-header .text-muted');
+  if (dashboardSubtitle) {
+    dashboardSubtitle.textContent = `${data.metadata.virus_name} (${data.metadata.variant}) Analysis Results`;
+  }
+  
+  // Destroy existing charts
+  if (rankingChart) rankingChart.destroy();
+  if (radarChart) radarChart.destroy();
+  
+  // Create ranking bar chart
+  const rankingCtx = document.getElementById('rankingChart').getContext('2d');
+  rankingChart = new Chart(rankingCtx, {
+    type: 'bar',
+    data: {
+      labels: chartData.map(d => d.gene),
+      datasets: [
+        { label: 'Overall', data: chartData.map(d => d.overall), backgroundColor: 'rgba(78, 205, 196, 0.8)', borderRadius: 4 },
+        { label: 'Immunogenicity', data: chartData.map(d => d.immunogenicity), backgroundColor: 'rgba(69, 179, 105, 0.8)', borderRadius: 4 },
+        { label: 'Stability', data: chartData.map(d => d.stability), backgroundColor: 'rgba(92, 156, 230, 0.8)', borderRadius: 4 },
+        { label: 'Safety', data: chartData.map(d => d.safety), backgroundColor: 'rgba(155, 114, 207, 0.8)', borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: { display: true, text: 'Candidate Score Comparison', color: '#e8eaed', font: { size: 14 } },
+        legend: { labels: { color: '#9aa0a6' } }
+      },
+      scales: {
+        y: { beginAtZero: true, max: 1, grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#9aa0a6' } },
+        x: { grid: { display: false }, ticks: { color: '#9aa0a6' } }
+      }
+    }
+  });
+  
+  // Create radar chart for top 3
+  const radarCtx = document.getElementById('radarChart').getContext('2d');
+  radarChart = new Chart(radarCtx, {
+    type: 'radar',
+    data: {
+      labels: ['Immunogenicity', 'Stability', 'Safety', 'Epitope Density', 'B-cell', 'T-cell'],
+      datasets: chartData.slice(0, 3).map((d, i) => ({
+        label: d.gene,
+        data: [d.immunogenicity, d.stability, d.safety, Math.min(d.immunogenicity * 0.8, 1), Math.min(d.immunogenicity * 0.9, 1), Math.min(d.immunogenicity * 0.7, 1)],
+        borderColor: ['rgba(78, 205, 196, 1)', 'rgba(69, 179, 105, 1)', 'rgba(155, 114, 207, 1)'][i],
+        backgroundColor: ['rgba(78, 205, 196, 0.1)', 'rgba(69, 179, 105, 0.1)', 'rgba(155, 114, 207, 0.1)'][i],
+        borderWidth: 2,
+        pointRadius: 4
+      }))
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: { display: true, text: 'Top 3 Candidates - Multi-factor Analysis', color: '#e8eaed', font: { size: 14 } },
+        legend: { labels: { color: '#9aa0a6' } }
+      },
+      scales: {
+        r: { beginAtZero: true, max: 1, grid: { color: 'rgba(255,255,255,0.08)' }, angleLines: { color: 'rgba(255,255,255,0.08)' }, pointLabels: { color: '#9aa0a6' }, ticks: { display: false } }
+      }
+    }
+  });
+  
+  // Update comparison table
+  const tableBody = document.querySelector('.comparison-table tbody');
+  if (tableBody) {
+    tableBody.innerHTML = data.candidates.map(c => `
+      <tr>
+        <td>${c.rank}</td>
+        <td><strong>${c.gene_name}</strong></td>
+        <td>${c.protein_name}</td>
+        <td>${c.length} aa</td>
+        <td>${c.scores.overall.toFixed(3)}</td>
+        <td>${c.scores.immunogenicity.toFixed(3)}</td>
+        <td>${c.scores.mutation_stability.toFixed(3)}</td>
+        <td>${c.scores.safety.toFixed(3)}</td>
+        <td>${c.epitope_summary?.bcell || '-'}</td>
+        <td>${c.epitope_summary?.tcell || '-'}</td>
+        <td><span class="grade grade-${c.grade.replace('+', '')}">${c.grade}</span></td>
+      </tr>
+    `).join('');
+  }
+  
+  // Update export preview
+  updateExportPreview(data);
+}
+
+// Update export section preview
+function updateExportPreview(data) {
+  const summary = document.getElementById('exportDataSummary');
+  if (!summary || !data) return;
+  
+  const topCandidate = data.candidates[0];
+  const mrnaCount = data.candidates.filter(c => c.suggested_mrna).length;
+  
+  summary.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+      <div>
+        <div style="color:var(--accent-cyan);font-weight:600;font-size:1.2rem;">${data.candidates.length}</div>
+        <div class="text-muted" style="font-size:.8rem;">Total Candidates</div>
+      </div>
+      <div>
+        <div style="color:var(--accent-green);font-weight:600;font-size:1.2rem;">${topCandidate?.grade || '-'}</div>
+        <div class="text-muted" style="font-size:.8rem;">Top Grade</div>
+      </div>
+      <div>
+        <div style="color:var(--accent-violet);font-weight:600;font-size:1.2rem;">${mrnaCount}</div>
+        <div class="text-muted" style="font-size:.8rem;">mRNA Sequences</div>
+      </div>
+      <div>
+        <div style="font-weight:600;font-size:1.2rem;">${data.metadata?.virus_name || 'Unknown'}</div>
+        <div class="text-muted" style="font-size:.8rem;">Virus Analyzed</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
+      <div class="text-muted" style="font-size:.8rem;margin-bottom:8px;">Top 3 Candidates:</div>
+      ${data.candidates.slice(0, 3).map(c => `
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:.85rem;">
+          <span>${c.gene_name}</span>
+          <span style="color:var(--accent-cyan);">${c.scores.overall.toFixed(3)}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// Update candidates section
+function updateCandidatesSection(data) {
+  const placeholder = document.getElementById('candidatesPlaceholder');
+  const grid = document.getElementById('candidatesGrid');
+  
+  if (!grid) return;
+  
+  // Hide placeholder, show grid
+  if (placeholder) placeholder.style.display = 'none';
+  grid.style.display = 'grid';
+  
+  grid.innerHTML = data.candidates.map(c => `
+    <div class="candidate-card">
+      <div class="card-header">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span class="card-rank">${c.rank}</span>
+          <span class="card-grade grade-${c.grade.toLowerCase().replace('+', '')}">${c.grade}</span>
+        </div>
+        <h3 style="margin:8px 0 4px 0;">${c.gene_name}</h3>
+        <div class="text-muted" style="font-size:0.85rem;">${c.protein_name}</div>
+      </div>
+      <div class="card-body">
+        <div class="score-bars">
+          <div class="score-row">
+            <span class="score-label">Overall</span>
+            <div class="score-bar"><div class="score-fill overall" style="width:${c.scores.overall*100}%;"></div></div>
+            <span class="score-value">${c.scores.overall.toFixed(3)}</span>
+          </div>
+          <div class="score-row">
+            <span class="score-label">Immunogenicity</span>
+            <div class="score-bar"><div class="score-fill immuno" style="width:${c.scores.immunogenicity*100}%;"></div></div>
+            <span class="score-value">${c.scores.immunogenicity.toFixed(3)}</span>
+          </div>
+          <div class="score-row">
+            <span class="score-label">Stability</span>
+            <div class="score-bar"><div class="score-fill stability" style="width:${c.scores.mutation_stability*100}%;"></div></div>
+            <span class="score-value">${c.scores.mutation_stability.toFixed(3)}</span>
+          </div>
+          <div class="score-row">
+            <span class="score-label">Safety</span>
+            <div class="score-bar"><div class="score-fill safety" style="width:${c.scores.safety*100}%;"></div></div>
+            <span class="score-value">${c.scores.safety.toFixed(3)}</span>
+          </div>
+        </div>
+        <div class="recommendation ${c.safety_warnings && c.safety_warnings.length ? 'caution' : ''}">
+          ${c.recommendation}
+        </div>
+        ${c.suggested_mrna ? `
+          <div class="mrna-container">
+            <div class="mrna-header">
+              <span style="font-weight:600;font-size:0.85rem;">Suggested mRNA</span>
+              <button class="copy-btn" onclick="copyMRNA('mrna-${c.rank}')">Copy</button>
+            </div>
+            <div class="mrna-sequence" id="mrna-${c.rank}">${c.suggested_mrna.substring(0, 200)}...</div>
+            <div class="mrna-stats">
+              <span>Length: ${c.mrna_length || c.suggested_mrna.length} nt</span>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+  `).join('');
+  
+  // Re-initialize lucide icons for dynamically added content
+  lucide.createIcons();
+}
+
+// Tab switching
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Copy mRNA sequence
+function copyMRNA(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  
+  // Find full sequence from results
+  const rank = parseInt(id.replace('mrna-', ''));
+  const candidate = analysisResults?.candidates?.find(c => c.rank === rank);
+  const fullSeq = candidate?.suggested_mrna || el.textContent;
+  
+  navigator.clipboard.writeText(fullSeq);
+  const btn = event.target;
+  const originalText = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = originalText, 2000);
+}
+
+// Export functions
+function exportJSON() {
+  if (!analysisResults) {
+    alert('No analysis results to export. Run an analysis first.');
+    return;
+  }
+  const blob = new Blob([JSON.stringify(analysisResults, null, 2)], {type: 'application/json'});
+  downloadBlob(blob, 'viroseek_results.json');
+}
+
+function exportCSV() {
+  if (!analysisResults) {
+    alert('No analysis results to export. Run an analysis first.');
+    return;
+  }
+  let csv = 'Rank,Gene,Protein,Length,Overall,Immunogenicity,Stability,Safety,B-cell,T-cell,Grade,Recommendation\n';
+  analysisResults.candidates.forEach(c => {
+    csv += `${c.rank},${c.gene_name},"${c.protein_name}",${c.length},${c.scores.overall},${c.scores.immunogenicity},${c.scores.mutation_stability},${c.scores.safety},${c.epitope_summary?.bcell || 0},${c.epitope_summary?.tcell || 0},${c.grade},"${c.recommendation}"\n`;
+  });
+  const blob = new Blob([csv], {type: 'text/csv'});
+  downloadBlob(blob, 'viroseek_results.csv');
+}
+
+function exportFASTA() {
+  if (!analysisResults) {
+    alert('No analysis results to export. Run an analysis first.');
+    return;
+  }
+  let fasta = '';
+  analysisResults.candidates.forEach(c => {
+    if (c.suggested_mrna) {
+      fasta += `>${c.gene_name}_mRNA | ${c.protein_name} | Score: ${c.scores.overall}\n`;
+      // Wrap at 70 characters
+      for (let i = 0; i < c.suggested_mrna.length; i += 70) {
+        fasta += c.suggested_mrna.slice(i, i + 70) + '\n';
+      }
+    }
+  });
+  if (!fasta) {
+    alert('No mRNA sequences available. Enable "Generate mRNA Variants" and re-run analysis.');
+    return;
+  }
+  const blob = new Blob([fasta], {type: 'text/plain'});
+  downloadBlob(blob, 'viroseek_mrna.fasta');
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Initialize charts with placeholder message
+function initPlaceholderCharts() {
+  const rankingCtx = document.getElementById('rankingChart');
+  const radarCtx = document.getElementById('radarChart');
+  
+  if (rankingCtx) {
+    rankingCtx.getContext('2d');
+    rankingChart = new Chart(rankingCtx, {
+      type: 'bar',
+      data: { labels: ['No data'], datasets: [{ label: 'Run analysis to see results', data: [0], backgroundColor: 'rgba(128,128,128,0.3)' }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Run Analysis to View Results', color: '#9aa0a6' } } }
+    });
+  }
+  
+  if (radarCtx) {
+    radarChart = new Chart(radarCtx, {
+      type: 'radar',
+      data: { labels: ['Immunogenicity', 'Stability', 'Safety', 'Epitope Density', 'B-cell', 'T-cell'], datasets: [] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Top Candidates Comparison', color: '#9aa0a6' } } }
+    });
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  initPlaceholderCharts();
+});
+
+lucide.createIcons();
+</script>
+</body>
+</html>
