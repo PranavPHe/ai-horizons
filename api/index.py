@@ -14,14 +14,24 @@ from flask import Flask, jsonify
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
+# The api folder is now self-contained, so imports work naturally from 'api' root
+# or relative if structure allows.
+# But since we moved everything into 'api/', the previous 'ROOT_DIR' logic is unneeded
+# unless imports rely on 'riboreach' being top-level module.
+# Let's adjust sys.path to be current directory (api).
+
+API_DIR = Path(__file__).resolve().parent
+if str(API_DIR) not in sys.path:
+    sys.path.insert(0, str(API_DIR))
 
 
-from riboreach.api import app as riboreach_app
-from vaxflow.api import app as vaxflow_app
-from viroseek.api import app as viroseek_app
+from riboreach import api as riboreach_app_module
+from vaxflow import api as vaxflow_app_module
+from viroseek import api as viroseek_app_module
+
+riboreach_app = riboreach_app_module.app
+vaxflow_app = vaxflow_app_module.app
+viroseek_app = viroseek_app_module.app
 
 
 root_app = Flask(__name__)
@@ -42,6 +52,7 @@ def root_health():
     )
 
 
+
 app = DispatcherMiddleware(
     root_app,
     {
@@ -50,3 +61,4 @@ app = DispatcherMiddleware(
         "/viroseek": viroseek_app,
     },
 )
+
