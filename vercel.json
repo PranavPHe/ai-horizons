@@ -2,7 +2,23 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
+      "destination": "/api/handler.py"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/riboreach",
+      "destination": "/riboreach.html"
+    },
+    {
+      "source": "/vaxflow",
+      "destination": "/vaxflow.html"
+    },
+    {
+      "source": "/viroseek",
+      "destination": "/viroseek.html"
     }
   ]
 }
