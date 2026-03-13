@@ -332,7 +332,8 @@
    VaxFlow Client-Side with API Integration
    ============================================================ */
 
-const API_BASE = 'http://localhost:5002';
+const IS_LOCAL_DEV = window.location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const API_BASE = IS_LOCAL_DEV ? 'http://localhost:5002' : '/api/vaxflow';
 let runCount = 0;
 let charts = {};
 let useAPI = false; // Will be set to true if API is available

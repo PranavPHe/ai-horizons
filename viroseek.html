@@ -601,7 +601,8 @@ ATGCGTACGATCGATCG..."></textarea>
 
 <script>
 // API configuration
-const API_BASE = 'http://localhost:5001';
+const IS_LOCAL_DEV = window.location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const API_BASE = IS_LOCAL_DEV ? 'http://localhost:5001' : '/api/viroseek';
 
 // Global state
 let analysisResults = null;

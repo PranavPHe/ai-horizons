@@ -78,7 +78,8 @@ def predict_yield():
         
         # Get model and predict
         model = get_production_model()
-        predicted_yield, confidence = model.predict_single(params)
+        predicted_yield = model.predict_single(params)
+        confidence = None
         
         # Calculate efficiency
         base_yield = params.batch_size_liters * 500  # ~500 doses per litre at 100%
@@ -143,7 +144,7 @@ def predict_yield():
                 dissolved_oxygen=params.dissolved_oxygen,
                 batch_size_liters=params.batch_size_liters
             )
-            y, _ = model.predict_single(test_params)
+            y = model.predict_single(test_params)
             sensitivity.append({"temperature": t, "yield": int(y)})
         
         return jsonify({
@@ -384,7 +385,7 @@ def predict_yield_internal(data):
         batch_size_liters=float(data.get("batch_size", 5000))
     )
     model = get_production_model()
-    predicted_yield, _ = model.predict_single(params)
+    predicted_yield = model.predict_single(params)
     base_yield = params.batch_size_liters * 500
     efficiency = min(1.0, predicted_yield / base_yield) if base_yield > 0 else 0.5
     return {

@@ -169,7 +169,8 @@
    Mirrors the Python dynamic_responder.py logic
    ============================================================ */
 
-const API_BASE = 'http://localhost:5003';
+const IS_LOCAL_DEV = window.location.protocol === 'file:' || ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const API_BASE = IS_LOCAL_DEV ? 'http://localhost:5003' : '/api/riboreach';
 let useAPI = false;
 
 // Check API availability on load
