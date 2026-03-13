@@ -10,7 +10,7 @@ This mounts each product-specific Flask app under a namespaced path:
 import sys
 from pathlib import Path
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, send_from_directory
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 
@@ -34,23 +34,46 @@ vaxflow_app = vaxflow_app_module.app
 viroseek_app = viroseek_app_module.app
 
 
-root_app = Flask(__name__)
+root_app = Flask(__name__, static_folder='static', template_folder='templates')
 
 
 @root_app.get("/")
-def root_health():
-    return jsonify(
-        {
-            "status": "ok",
-            "service": "ai-horizons-api",
-            "routes": {
-                "riboreach": "/api/riboreach/api/*",
-                "vaxflow": "/api/vaxflow/api/*",
-                "viroseek": "/api/viroseek/api/*",
-            },
-        }
-    )
+def home():
+    return render_template("index.html")
 
+@root_app.get("/riboreach")
+def riboreach_page():
+    return render_template("riboreach.html")
+
+@root_app.get("/vaxflow")
+def vaxflow_page():
+    return render_template("vaxflow.html")
+
+@root_app.get("/viroseek")
+def viroseek_page():
+    return render_template("viroseek.html")
+
+@root_app.get("/styles.css")
+def styles():
+    return send_from_directory("static", "styles.css")
+
+
+
+@root_app.get("/index.html")
+def home_explicit():
+    return render_template("index.html")
+
+@root_app.get("/riboreach.html")
+def riboreach_page_explicit():
+    return render_template("riboreach.html")
+
+@root_app.get("/vaxflow.html")
+def vaxflow_page_explicit():
+    return render_template("vaxflow.html")
+
+@root_app.get("/viroseek.html")
+def viroseek_page_explicit():
+    return render_template("viroseek.html")
 
 
 app = DispatcherMiddleware(
