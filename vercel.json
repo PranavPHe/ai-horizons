@@ -1,24 +1,9 @@
 {
+  "cleanUrls": true,
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/riboreach",
-      "destination": "/riboreach.html"
-    },
-    {
-      "source": "/vaxflow",
-      "destination": "/vaxflow.html"
-    },
-    {
-      "source": "/viroseek",
-      "destination": "/viroseek.html"
+      "destination": "/api/main.py"
     }
   ]
 }
