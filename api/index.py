@@ -57,6 +57,26 @@ def viroseek_page():
 def styles():
     return send_from_directory("static", "styles.css")
 
+@root_app.route("/<path:path>")
+def catch_all(path):
+    """
+    Catch-all route for other static files or client-side routing if necessary.
+    But primarily to ensure 404s are handled gracefully or static files like images work.
+    """
+    try:
+        if (API_DIR / "static" / path).exists():
+            return send_from_directory("static", path)
+        elif (API_DIR / "templates" / path).exists():
+             return render_template(path)
+        else:
+             # Fallback for paths that might be templates without extension
+             if (API_DIR / "templates" / f"{path}.html").exists():
+                 return render_template(f"{path}.html")
+    except Exception as e:
+        print(f"Error serving {path}: {e}")
+    
+    return f"Page not found: {path}", 404
+
 
 
 @root_app.get("/index.html")
@@ -79,9 +99,9 @@ def viroseek_page_explicit():
 app = DispatcherMiddleware(
     root_app,
     {
-        "/riboreach": riboreach_app,
-        "/vaxflow": vaxflow_app,
-        "/viroseek": viroseek_app,
+        "/api/riboreach": riboreach_app,
+        "/api/vaxflow": vaxflow_app,
+        "/api/viroseek": viroseek_app,
     },
 )
 
